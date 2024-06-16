@@ -22,7 +22,7 @@ requires-python = ">=3.10"
     dev   = ["bumpver", "pytest"]
 
     [project.scripts]
-    extract = "extractor.__main__:main"
+    extract = "activation_extractor.__main__:main"
 
     [project.urls]
     repository    = "https://github.com/edithvillegas/activation-extractor"

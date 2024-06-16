@@ -75,13 +75,13 @@ def load_model(model_name, model_type, **kwargs):
             return model, tokenizer
             
         case 'prot_t5':
-            from transformers import
+            from transformers import T5EncoderModel
             model = T5EncoderModel.from_pretrained(model_name, **kwargs)
             tokenizer = load_tokenizer(model_name, tokenizer_type='T5Tokenizer', **kwargs)
             return model, tokenizer
             
         case 'ankh':
-            from transformers import
+            from transformers import T5EncoderModel
             #model = AutoModelForSeq2SeqLM.from_pretrained(model_name, **kwargs)
             model = T5EncoderModel.from_pretrained(model_name, **kwargs) #output_attentions
             tokenizer = load_tokenizer(model_name, tokenizer_type='AutoTokenizer', **kwargs)

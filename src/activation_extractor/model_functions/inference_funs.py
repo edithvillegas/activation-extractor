@@ -39,7 +39,7 @@ def define_inference_function(model_type, model, tokenizer, device):
                     output_hidden_states=output_hidden_states
                 )
                 
-                return outpus
+                return outputs
             #### end function definition
 
         #🥩, 🥩

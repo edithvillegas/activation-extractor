@@ -20,48 +20,49 @@ class IntermediateExtractorBase:
         self.intermediate_outputs = {} #store intermediate calculations
 
     def create_hook(self, layer_name):
-    """
-    Creates a pytorch hook that saves the output of a given module/layer in the model.
-
-    :param layer_name: name of the module/layer
-    :type layer_name: str
-
-    :return: the corresponding hook function
-    :rtype: function
-    """
+        """
+        Creates a pytorch hook that saves the output of a given module/layer in the model.
+        A pytorch hook is a function that is executed after the module is called.
+        
+        :param layer_name: name of the module/layer
+        :type layer_name: str
+        
+        :return: the corresponding hook function
+        :rtype: function
+        """
         def hook(model, input, output):
             self.intermediate_outputs[layer_name] = output
         return hook
     
     def register_hooks(self):
-    """
-    Registers all the hooks for the specified layers.
-    It saves the hook handles to the hook_handles attribute.
-    """
+        """
+        Registers all the hooks for the specified layers.
+        It saves the hook handles to the hook_handles attribute.
+        """
         for name, module in self.model.named_modules():
             if name in self.layer_list:
                 self.hook_handles[name] = module.register_forward_hook(self.create_hook(name))
 
     def detach_hooks(self):
-    """
-    Detaches all the registered hooks saved in the hook_handles attribute.
-    """
+        """
+        Detaches all the registered hooks saved in the hook_handles attribute.
+        """
         for name, hook_handle in self.hook_handles.items():
             hook_handle.remove()
 
     def clear_all_hooks(self):
-    """
-    Clears ALL the forward hooks registered to the model. 
-    """
+        """
+        Clears ALL the forward hooks registered to the model. 
+        """
         for name, module in self.model.named_modules():
             if name in self.layer_list:
                 module._forward_hooks = OrderedDict()
 
     def get_outputs(self):
-    """
-    Returns the intermediate activation outputs.
-
-    :return: dictionary with intermediate outputs for each specified module/layer.
-    :rtype: dictionary
-    """
-        return self.intermediate_outputs()
+        """
+        Returns the intermediate activation outputs.
+    
+        :return: dictionary with intermediate outputs for each specified module/layer.
+        :rtype: dictionary
+        """
+        return self.intermediate_outputs
