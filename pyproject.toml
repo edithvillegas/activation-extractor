@@ -1,0 +1,29 @@
+[build-system]
+requires      = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "activation_extractor"
+version = "0.0.0"
+description = "Extracting intermediate activations/embeddings from any Pytorch model"
+readme = "README.md"
+authors = [{ name = "Edith Villegas", email = "edith.villegas@areasciencepark.it" }]
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+keywords = ["deep-learning", "pytorch", "nlp"]
+dependencies = ["numpy", "torch"]
+requires-python = ">=3.10"
+
+    [project.optional-dependencies]
+    build = ["transformers", "datasets"]
+    dev   = ["bumpver", "pytest"]
+
+    [project.scripts]
+    extract = "extractor.__main__:main"
+
+    [project.urls]
+    repository    = "https://github.com/edithvillegas/activation-extractor"
+    documentation = "https://github.com/edithvillegas/activation-extractor"
