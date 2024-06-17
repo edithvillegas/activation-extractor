@@ -6,3 +6,4 @@ src/activation_extractor.egg-info
 /docs/source/_static/*
 /docs/source/_templates/*
 /docs/build/*
+/dist/*
