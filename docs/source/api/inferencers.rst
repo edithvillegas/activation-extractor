@@ -1,5 +1,5 @@
 Inferencers 
 ===========
 
-.. autoclass:: activation_extraction.inferencers.inferencer.Inferencer
+.. autoclass:: activation_extractor.inferencers.inferencer.Inferencer
    :members:

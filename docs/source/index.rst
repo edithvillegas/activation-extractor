@@ -17,7 +17,6 @@ Extracting the outputs from intermediate layers/modules from any Pytorch model.
     api/model_functions
     api/inferencers
     api/activation_extractor
-    api/intermediateExtractorBase
     api/modules
 
 Indices and tables
