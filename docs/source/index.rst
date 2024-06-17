@@ -15,6 +15,8 @@ Activation Extractor's documentation
     api/model_functions
     api/inferencers
     api/activation_extractor
+    api/intermediateExtractorBase
+    api/modules
 
 Indices and tables
 ==================
