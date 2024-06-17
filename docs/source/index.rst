@@ -13,6 +13,7 @@ Activation Extractor's documentation
     :caption: Python API:
 
     api/model_functions
+    api/inferencers
 
 Indices and tables
 ==================
