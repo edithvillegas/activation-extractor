@@ -13,7 +13,7 @@ Welcome to Activation Extractor's documentation!
     contents/introduction
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 4
     :caption: Python API:
 
     api/activation_extractor
