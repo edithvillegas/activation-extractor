@@ -14,11 +14,11 @@ classifiers = [
     "Programming Language :: Python :: 3",
 ]
 keywords = ["deep-learning", "pytorch", "nlp"]
-dependencies = ["numpy", "torch"]
+dependencies = ["numpy", "torch", "transformers", "datasets"]
 requires-python = ">=3.10"
 
     [project.optional-dependencies]
-    build = ["transformers", "datasets"]
+    build = []
     dev   = ["bumpver", "pytest"]
 
     [project.scripts]

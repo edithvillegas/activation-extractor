@@ -3,3 +3,6 @@ src/activation_extractor.egg-info
 */__pycache__/*
 .ipynb_checkpoints
 *.pyc
+/docs/source/_static/*
+/docs/source/_templates/*
+/docs/build/*
