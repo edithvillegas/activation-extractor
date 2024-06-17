@@ -20,7 +20,7 @@ class Inferencer:
     :type data_type: str
     :param device: device (cpu, cuda...)
     :type device: str
-    :param half: this variable decides if the pytorch model should be halfed
+    :param half: this variable decides if the pytorch model should be halved
     :type device: bool
     
     :return: the corresponding hook function
