@@ -1,5 +1,5 @@
 # Activation Extractor
-Extracting activations/embeddings from the intermediate layers of any Pytorch model.
+Extracting neuron activations/embeddings from the intermediate layers of any Pytorch model.
 
 ## Installation
 To install directly from source as an editable module, run these commands from the terminal:
