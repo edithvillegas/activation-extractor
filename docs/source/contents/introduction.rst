@@ -3,7 +3,7 @@ Introduction
 
 This library automatically extracts intermediate outputs from a pytorch model.
 
-Installation/Usage:
+Installation/Usage
 *******************
 To install directly from source as an editable module, run these commands from the terminal:
 
@@ -14,8 +14,8 @@ To install directly from source as an editable module, run these commands from t
 
 The source code can be found `here <https://github.com/edithvillegas/activation-extractor/>`_
 
-Quick start:
-**************************************************
+Quick start
+************
 
 .. code-block:: python
     import activation_extractor
