@@ -10,6 +10,12 @@ Welcome to Activation Extractor's documentation!
     :maxdepth: 2
     :caption: Contents:
 
+    contents/introduction
+
+.. toctree::
+    :maxdepth: 2
+    :caption: Python API:
+
     api/activation_extractor
 
 Indices and tables
