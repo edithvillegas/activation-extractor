@@ -7,7 +7,7 @@ Installation/Usage
 *******************
 To install directly from source as an editable module, run these commands from the terminal:
 
-.. code-block:: bash
+..  code-block:: bash
     git clone git@github.com:edithvillegas/activation-extractor.git
     cd activation-extractor
     python -m pip install -e .
@@ -17,7 +17,7 @@ The source code can be found `here <https://github.com/edithvillegas/activation-
 Quick start
 ************
 
-.. code-block:: python
+..  code-block:: python
     import activation_extractor
 
     #load model
