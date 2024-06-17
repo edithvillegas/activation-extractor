@@ -32,6 +32,7 @@ sequences = ["AAAAAAAAAAA", "HHHHHHHHHHHHHH"]
 4. Initialize the activation extractor.
 The first argument to the extractor initialization is the model object (```inferencer.model```).
 The ```layers_to_hook``` variable should be a list with all the layers/modules' names that you want to get the activations from.
+For the models included in the library by default, the function ```get_layers_to_hook``` returns a list of all the most relevant layers from the model.
 
 ```python
 layers_to_hook = activation_extractor.get_layers_to_hook(inferencer.model,inferencer.model_type)
