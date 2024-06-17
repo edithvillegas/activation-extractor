@@ -30,10 +30,10 @@ def load_tokenizer(model_name, tokenizer_type, **kwargs):
 # load models ⏳
 def load_model(model_name, model_type, **kwargs):
     """
-    Get a list of default layers to hook for each model type.
+    Loads a Pytorch model according to the passed model name. 
 
     :param model: the Pytorch model object
-    :param model_type: A model type (protein - esm, prot_t5, ankh; dna - nucleotide-transformer, hyenadna, evo, caduceus).
+    :param model_type: A model type (see list of included models).
     :type model_type: str
 
     :return: the list of layers/modules names
