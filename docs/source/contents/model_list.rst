@@ -1,7 +1,7 @@
 List of Models Included by Default
 ================================================
 This is a list of all the models included by default in the extractor for each data type, with the internal ``model_type`` 
-written in parenthesis. 
+written in parentheses. 
 
 🤗 Huggingface Models
 ******************
