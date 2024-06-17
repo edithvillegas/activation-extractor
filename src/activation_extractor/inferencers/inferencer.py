@@ -8,11 +8,12 @@ from activation_extractor.model_functions.inference_funs import define_inference
 # Inferencer Class =====================
 class Inferencer:
     """
-    This class, when initialized with a model name
-    - Loads model, tokenizer
-    - Defines tokenization function
-    - Defines inference function
-    - Can be used to perform inference
+    This class, when initialized with a model name:
+    
+    * Loads model, tokenizer
+    * Defines tokenization function
+    * Defines inference function
+    * Can be used to perform inference
     
     :param model_name: name of the model (i.e. as in huggingface)
     :type model_name: str
