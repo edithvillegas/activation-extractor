@@ -1,6 +1,8 @@
 Activation Extractor's documentation
 ================================================
 
+Extracting the outputs from intermediate layers/modules from any Pytorch model.
+
 .. toctree::
     :maxdepth: 2
     :caption: Contents:
