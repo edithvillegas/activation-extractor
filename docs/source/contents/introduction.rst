@@ -3,21 +3,25 @@ Introduction
 
 This library automatically extracts intermediate outputs from a pytorch model.
 
-Installation/Usage
-*******************
+Installation
+*************
 To install directly from source as an editable module, run these commands from the terminal:
 
 ..  code-block:: bash
+
     git clone git@github.com:edithvillegas/activation-extractor.git
     cd activation-extractor
     python -m pip install -e .
 
-The source code can be found `here <https://github.com/edithvillegas/activation-extractor/>`_
+The github repository with the source code can be found `here <https://github.com/edithvillegas/activation-extractor/>`_.
 
 Quick start
 ************
 
+The following example loads the ``facebook/esm2_t6_8M_UR50D`` model from huggingface (small transformer for protein sequences) and extracts the intermediate activations of each layer.
+
 ..  code-block:: python
+
     import activation_extractor
 
     #load model
@@ -41,3 +45,7 @@ Quick start
 
     #close extractor
     extractor.clear_all_hooks()
+
+
+
+
