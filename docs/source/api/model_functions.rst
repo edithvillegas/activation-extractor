@@ -1,7 +1,7 @@
 Model Specific Functions
 ========================
 
-This module contains wrappers to load, tokenize and perform inference on models included by default on the ``model_types`` list so that they can all be called with a uniform API.
+This module contains wrappers to load, tokenize and perform inference and format outputs from models included by default on the ``model_types`` list so that they can all be called with a uniform API.
 
 This is where new models can be included in the code. 
 
@@ -33,6 +33,12 @@ default_hooked_layers
 ***************
 
 ..  automodule:: activation_extractor.model_functions.default_hooked_layers
+    :members: 
+
+embedding_to_numpy
+***************
+
+..  automodule:: activation_extractor.model_functions.embedding_to_numpy
     :members: 
 
 
