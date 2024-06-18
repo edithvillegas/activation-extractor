@@ -7,8 +7,8 @@ IntermediateExtractorBase
 ..  autoclass:: activation_extractor.extractors.intermediateExtractorBase
     :members:
 
-IntermediateExtractorBase
+IntermediateExtractor
 *************************
 
-..  autoclass:: activation_extractor.extractors.intermediateExtractorBase
+..  autoclass:: activation_extractor.extractors.intermediateExtractor
     :members:
