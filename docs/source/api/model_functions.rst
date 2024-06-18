@@ -5,6 +5,12 @@ This module contains wrappers to load, tokenize and perform inference on models 
 
 This is where new models can be included in the code. 
 
+model_types
+***************
+
+..  automodule:: activation_extractor.model_functions.model_types
+    :members: 
+
 load_models
 *************
 
@@ -23,11 +29,13 @@ inference_funs
 ..  automodule:: activation_extractor.model_functions.inference_funs
     :members: 
 
-model_types
+default_hooked_layers
 ***************
 
-..  automodule:: activation_extractor.model_functions.model_types
+..  automodule:: activation_extractor.model_functions.default_hooked_layers
     :members: 
+
+
 
 
 
