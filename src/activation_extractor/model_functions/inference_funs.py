@@ -1,3 +1,6 @@
+"""
+This file defines an inferencer wrapper for the included models.
+"""
 import torch
 
 def define_inference_function(model_type, model, tokenizer, device):
