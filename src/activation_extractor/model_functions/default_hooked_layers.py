@@ -1,3 +1,7 @@
+"""
+This file contains functions to get relevant layer (module) names to hook from the models included by default.
+"""
+
 def get_layers_to_hook(model, model_type):
     """
     Get a list of default layers to hook (extract activations from) for each model type.
