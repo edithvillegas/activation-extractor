@@ -1,3 +1,7 @@
+"""
+Defines a tokenizer wrapper function for the models included by default.
+"""
+
 def define_tokenize_function(model_type, tokenizer):
     """
     Define the right function to tokenize the inputs based on the model type.
