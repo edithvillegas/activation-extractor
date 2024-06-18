@@ -14,10 +14,10 @@ Extracting the outputs from intermediate layers/modules from any Pytorch model.
     :maxdepth: 2
     :caption: Python API:
 
-    api/model_functions
     api/inferencers
-    api/activation_extractor
-    api/modules
+    api/extractors
+    api/model_functions
+    
 
 Indices and tables
 ==================
