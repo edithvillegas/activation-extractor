@@ -5,8 +5,10 @@ from activation_extractor.model_functions.load_models import load_model
 from activation_extractor.model_functions.tokenize_funs import define_tokenize_function
 from activation_extractor.model_functions.inference_funs import define_inference_function
 
+import pandas as pd
+
 # Inferencer Class =====================
-class Inferencer:
+class InferencerBase:
     """
     This class, when initialized with a model name:
     
@@ -32,10 +34,7 @@ class Inferencer:
         self.device = device
         
         #model type
-        for model_type in model_types[data_type]:
-            if model_type in model_name:
-                self.model_type=model_type
-                break
+        self.model_type = model_types[model_types.model_name==model_name].model_type.tolist()[0]
             
         #tokenizer, model
         self.model, self.tokenizer = load_model(model_name, model_type=self.model_type)

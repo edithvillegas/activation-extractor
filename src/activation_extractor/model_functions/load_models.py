@@ -23,6 +23,9 @@ def load_tokenizer(model_name, tokenizer_type, **kwargs):
         case "T5Tokenizer":
             from transformers import T5Tokenizer
             tokenizer = T5Tokenizer.from_pretrained(model_name, trust_remote_code=True, do_lower_case=False, **kwargs)
+        case "BertTokenizer":
+            from transformers import BertTokenizer
+            tokenizer = BertTokenizer.from_pretrained(model_name, **kwargs)
         case _:
             raise ValueError(f"tokenizer_type not valid")
     return tokenizer
@@ -39,55 +42,58 @@ def load_model(model_name, model_type, **kwargs):
     :return: the list of layers/modules names
     :rtype: list
     """
+    #START OF MATCH#
     match model_type:
     #DNA models 🧬 --- 
         case "nucleotide-transformer":
             from transformers import AutoModelForMaskedLM
             model = AutoModelForMaskedLM.from_pretrained(model_name, trust_remote_code=True, **kwargs)
             tokenizer = load_tokenizer(model_name, tokenizer_type='AutoTokenizer', **kwargs)
-            return model, tokenizer
             
         case 'hyenadna':
             from transformers import AutoModel
             model = AutoModel.from_pretrained(model_name, trust_remote_code=True, **kwargs)
             #model = AutoModelForSequenceClassification.from_pretrained(model_name, trust_remote_code=True, **kwargs)   
             tokenizer = load_tokenizer(model_name, tokenizer_type='AutoTokenizer', **kwargs)
-            return model, tokenizer
             
         case 'evo':
             from evo import Evo
             evo_model = Evo(model_name.split('/')[1])
             model, tokenizer = evo_model.model, evo_model.tokenizer
-            return model, tokenizer
             
         case 'caduceus':
             from transformers import AutoModelForMaskedLM
             #model = AutoModelForSeq2SeqLM.from_pretrained(model_name, **kwargs)
             model = AutoModelForMaskedLM.from_pretrained(model_name, trust_remote_code=True, **kwargs)
             tokenizer = load_tokenizer(model_name, tokenizer_type='AutoTokenizer', **kwargs)
-            return model, tokenizer
             
     #protein models 🥩 ---
         case 'esm':
             from transformers import AutoModelForMaskedLM
             model = AutoModelForMaskedLM.from_pretrained(model_name, trust_remote_code=True, **kwargs)
             tokenizer = load_tokenizer(model_name, tokenizer_type='AutoTokenizer', **kwargs)
-            return model, tokenizer
             
         case 'prot_t5':
             from transformers import T5EncoderModel
             model = T5EncoderModel.from_pretrained(model_name, **kwargs)
             tokenizer = load_tokenizer(model_name, tokenizer_type='T5Tokenizer', **kwargs)
-            return model, tokenizer
-            
+
+        case "prot_bert":
+            from transformers import BertForMaskedLM
+            model = BertForMaskedLM.from_pretrained(model_name, **kwargs)
+            tokenizer = load_tokenizer(model_name, tokenizer_type="BertTokenizer", 
+                                       do_lower_case=False, **kwargs)
+
         case 'ankh':
             from transformers import T5EncoderModel
             #model = AutoModelForSeq2SeqLM.from_pretrained(model_name, **kwargs)
             model = T5EncoderModel.from_pretrained(model_name, **kwargs) #output_attentions
             tokenizer = load_tokenizer(model_name, tokenizer_type='AutoTokenizer', **kwargs)
-            return model, tokenizer
 
         case _:
             raise ValueError(f"model_type not valid ")
-    #----
+         
+    #END OF MATCH#
+    
+    return model, tokenizer
     

@@ -50,12 +50,25 @@ def define_inference_function(model_type, model, tokenizer, device):
             #### start function definition
             def inference_fun(tokenized_inputs, device, **kwargs):
                 tokens_ids = torch.tensor(tokenized_inputs['input_ids']).to(device)
-                attention_mask = torch.tensor(tokenized['attention_mask']).to(device)
+                attention_mask = torch.tensor(tokenized_inputs['attention_mask']).to(device)
                 
                 outputs = model(input_ids=tokens_ids, 
                                 attention_mask=attention_mask)
                 return outputs
             #### end function definition    
+
+        #🥩
+        case "prot_bert":
+            #### start function definition
+            def inference_fun(tokenized_inputs, device, **kwargs):
+                
+                for key in tokenized_inputs.keys():
+                    tokenized_inputs[key]=tokenized_inputs[key].to(device)
+                    
+                outputs = model(**tokenized_inputs)
+                return outputs
+            #### end function definition   
+            
 
         #default inference
         #🧬, 🧬
@@ -64,6 +77,7 @@ def define_inference_function(model_type, model, tokenizer, device):
             def inference_fun(tokenized_inputs, device, **kwargs):
                 tokens_ids = tokenized_inputs["input_ids"].to(device)
                 outputs = model(tokens_ids)
+                return outputs
             #### end function definition    
 
     #return rightly defined inference function

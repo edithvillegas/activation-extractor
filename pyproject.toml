@@ -17,13 +17,19 @@ keywords = ["deep-learning", "pytorch", "nlp"]
 dependencies = ["numpy", "torch", "transformers", "datasets"]
 requires-python = ">=3.10"
 
-    [project.optional-dependencies]
-    build = []
-    dev   = ["bumpver", "pytest"]
+[project.optional-dependencies]
+build = []
+dev   = ["bumpver", "pytest"]
 
-    [project.scripts]
-    extract = "activation_extractor.__main__:main"
+[project.scripts]
+extract = "activation_extractor.__main__:main"
 
-    [project.urls]
-    repository    = "https://github.com/edithvillegas/activation-extractor"
-    documentation = "https://activation-extractor.readthedocs.io/"
+[project.urls]
+repository    = "https://github.com/edithvillegas/activation-extractor"
+documentation = "https://activation-extractor.readthedocs.io/"
+
+[tool.setuptools.package-data]
+"activation_extractor" = [
+                            "model_functions/input_models.csv", 
+                            "data/*.fasta",
+                            ]

@@ -1,8 +1,9 @@
 """
 Defines a tokenizer wrapper function for the models included by default.
 """
+import re
 
-def define_tokenize_function(model_type, tokenizer):
+def define_tokenize_function(model_type, tokenizer, device=None):
     """
     Define the right function to tokenize the inputs based on the model type.
     This function is called inside inferencer.tokenizer().
@@ -16,7 +17,7 @@ def define_tokenize_function(model_type, tokenizer):
     match model_type:
 
         #🥩,🧬,🧬,🧬 
-        case "esm" | "nucleotide-transformer" | "hyena" | "caduceus":  
+        case "esm" | "nucleotide-transformer" | "hyenadna" | "caduceus":  
             #### start function definition
             def tokenize_fun(sequence_inputs, **kwargs):
                 tokenized = tokenizer.batch_encode_plus(sequence_inputs, 
@@ -34,22 +35,24 @@ def define_tokenize_function(model_type, tokenizer):
             def tokenize_fun(sequence_inputs, **kwargs):
                 tokens_ids, seq_lengths = prepare_batch(
                 sequence_inputs,
-                self.tokenizer,
+                tokenizer,
                 prepend_bos=False,
-                device=self.device,
+                device=device,
                 )
                 tokenized=dict()
                 tokenized["input_ids"]=tokens_ids
                 return tokenized
             #### end function definition
 
+       
         #🥩
-        case "prot_t5": 
+        case "prot_bert": 
             #### start function definition
             def tokenize_fun(sequence_inputs, **kwargs):
                 # replace all rare/ambiguous amino acids by X and introduce white-space between all amino acids
                 sequence_inputs = [" ".join(list(re.sub(r"[UZOB]", "X", sequence))) for sequence in sequence_inputs]
-                tokenized = self.tokenizer.batch_encode_plus(sequence_inputs, add_special_tokens=True, padding="longest")
+                tokenized = tokenizer.batch_encode_plus(sequence_inputs, add_special_tokens=True, 
+                                                        padding="longest", return_tensors='pt')
                 return tokenized 
              #### end function definition
 
@@ -58,7 +61,7 @@ def define_tokenize_function(model_type, tokenizer):
             #### start function definition
             def tokenize_fun(sequence_inputs, **kwargs):
                 sequence_inputs = [list(seq) for seq in sequence_inputs]
-                tokenized = self.tokenizer.batch_encode_plus(sequence_inputs, 
+                tokenized = tokenizer.batch_encode_plus(sequence_inputs, 
                                     add_special_tokens=True, 
                                     padding="longest",
                                     is_split_into_words=True, 

@@ -1,5 +1,5 @@
 from activation_extractor.extractors.intermediateExtractor import IntermediateExtractor
-from activation_extractor.inferencers.inferencer import Inferencer
+from activation_extractor.inferencers.inferencerBase import InferencerBase as Inferencer
 from activation_extractor.model_functions.default_hooked_layers import get_layers_to_hook
 
 #from activation_extractor import test
