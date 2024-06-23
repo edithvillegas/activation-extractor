@@ -1,37 +1,31 @@
-model_name,model_type,data_type,modality,source,notes
-facebook/esm2_t12_35M_UR50D,esm,protein 🥩,sequence,Huggingface 🤗,
-facebook/esm2_t30_150M_UR50D,esm,protein 🥩,sequence,Huggingface 🤗,
-facebook/esm2_t33_650M_UR50D,esm,protein 🥩,sequence,Huggingface 🤗,
-facebook/esm2_t36_3B_UR50D,esm,protein 🥩,sequence,Huggingface 🤗,
-facebook/esm2_t6_8M_UR50D,esm,protein 🥩,sequence,Huggingface 🤗,
-Rostlab/prot_t5_xl_half_uniref50-enc,prot_t5,protein 🥩,sequence,Huggingface 🤗,
-Rostlab/prot_t5_xl_uniref50,prot_t5,protein 🥩,sequence,Huggingface 🤗,
-Rostlab/prot_t5_xl_bfd,prot_t5,protein 🥩,sequence,Huggingface 🤗,⭐️
-Rostlab/prot_bert_bfd,prot_bert,protein 🥩,sequence,Huggingface 🤗,⭐️
-Rostlab/prot_bert,prot_bert,protein 🥩,sequence,Huggingface 🤗,⭐️
-Rostlab/prot_albert,prot_bert,protein 🥩,sequence,Huggingface 🤗,❗
-,,,,,
-,,,,,
-ElnaggarLab/ankh-base,ankh,protein 🥩,sequence,Huggingface 🤗,
-ElnaggarLab/ankh-large,ankh,protein 🥩,sequence,Huggingface 🤗,
-InstaDeepAI/nucleotide-transformer-v2-100m-multi-species,nucleotide-transformer,dna 🧬,sequence,Huggingface 🤗,
-InstaDeepAI/nucleotide-transformer-v2-250m-multi-species,nucleotide-transformer,dna 🧬,sequence,Huggingface 🤗,
-InstaDeepAI/nucleotide-transformer-v2-500m-multi-species,nucleotide-transformer,dna 🧬,sequence,Huggingface 🤗,
-InstaDeepAI/nucleotide-transformer-v2-50m-multi-species,nucleotide-transformer,dna 🧬,sequence,Huggingface 🤗,
-LongSafari/hyenadna-large-1m-seqlen-hf,nucleotide-transformer,dna 🧬,sequence,Huggingface 🤗,
-LongSafari/hyenadna-medium-160k-seqlen-hf,nucleotide-transformer,dna 🧬,sequence,Huggingface 🤗,
-LongSafari/hyenadna-medium-450k-seqlen-hf,nucleotide-transformer,dna 🧬,sequence,Huggingface 🤗,
-LongSafari/hyenadna-small-32k-seqlen-hf,nucleotide-transformer,dna 🧬,sequence,Huggingface 🤗,
-LongSafari/hyenadna-tiny-16k-seqlen-d128-hf,nucleotide-transformer,dna 🧬,sequence,Huggingface 🤗,
-kuleshov-group/caduceus-ps_seqlen-131k_d_model-256_n_layer-16,caduceus,dna 🧬,sequence,Huggingface 🤗,
-kuleshov-group/caduceus-ps_seqlen-1k_d_model-118_n_layer-4_lr-8e-3,caduceus,dna 🧬,sequence,Huggingface 🤗,
-kuleshov-group/caduceus-ps_seqlen-1k_d_model-256_n_layer-4_lr-8e-3,caduceus,dna 🧬,sequence,Huggingface 🤗,
-togethercomputer/evo-1-131k-base,evo,dna 🧬,sequence,Github 🐈🐙,
-togethercomputer/evo-1-8k-base,evo,dna 🧬,sequence,Github 🐈🐙,
-google/vit-base-patch16-224-in21k,vit,image 🖼️,image,Huggingface 🤗,⭐️
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
-,,,,,
+type,data_type,model_name,model_type,modality,source,notes
+🥩,protein,facebook/esm2_t12_35M_UR50D,esm,sequence,Huggingface 🤗,
+🥩,protein,facebook/esm2_t30_150M_UR50D,esm,sequence,Huggingface 🤗,
+🥩,protein,facebook/esm2_t33_650M_UR50D,esm,sequence,Huggingface 🤗,
+🥩,protein,facebook/esm2_t36_3B_UR50D,esm,sequence,Huggingface 🤗,
+🥩,protein,facebook/esm2_t6_8M_UR50D,esm,sequence,Huggingface 🤗,
+🥩,protein,Rostlab/prot_t5_xl_half_uniref50-enc,prot_t5,sequence,Huggingface 🤗,
+🥩,protein,Rostlab/prot_t5_xl_uniref50,prot_t5,sequence,Huggingface 🤗,
+🥩,protein,Rostlab/prot_t5_xl_bfd,prot_t5,sequence,Huggingface 🤗,⭐️
+🥩,protein,Rostlab/prot_bert_bfd,prot_bert,sequence,Huggingface 🤗,⭐️
+🥩,protein,Rostlab/prot_bert,prot_bert,sequence,Huggingface 🤗,⭐️
+🥩,protein,Rostlab/prot_albert,prot_bert,sequence,Huggingface 🤗,❗
+,,,,,,
+,,,,,,
+🥩,protein,ElnaggarLab/ankh-base,ankh,sequence,Huggingface 🤗,
+🥩,protein,ElnaggarLab/ankh-large,ankh,sequence,Huggingface 🤗,
+🧬,dna,InstaDeepAI/nucleotide-transformer-v2-100m-multi-species,nucleotide-transformer,sequence,Huggingface 🤗,
+🧬,dna,InstaDeepAI/nucleotide-transformer-v2-250m-multi-species,nucleotide-transformer,sequence,Huggingface 🤗,
+🧬,dna,InstaDeepAI/nucleotide-transformer-v2-500m-multi-species,nucleotide-transformer,sequence,Huggingface 🤗,
+🧬,dna,InstaDeepAI/nucleotide-transformer-v2-50m-multi-species,nucleotide-transformer,sequence,Huggingface 🤗,
+🧬,dna,LongSafari/hyenadna-large-1m-seqlen-hf,nucleotide-transformer,sequence,Huggingface 🤗,
+🧬,dna,LongSafari/hyenadna-medium-160k-seqlen-hf,nucleotide-transformer,sequence,Huggingface 🤗,
+🧬,dna,LongSafari/hyenadna-medium-450k-seqlen-hf,nucleotide-transformer,sequence,Huggingface 🤗,
+🧬,dna,LongSafari/hyenadna-small-32k-seqlen-hf,nucleotide-transformer,sequence,Huggingface 🤗,
+🧬,dna,LongSafari/hyenadna-tiny-16k-seqlen-d128-hf,nucleotide-transformer,sequence,Huggingface 🤗,
+🧬,dna,kuleshov-group/caduceus-ps_seqlen-131k_d_model-256_n_layer-16,caduceus,sequence,Huggingface 🤗,
+🧬,dna,kuleshov-group/caduceus-ps_seqlen-1k_d_model-118_n_layer-4_lr-8e-3,caduceus,sequence,Huggingface 🤗,
+🧬,dna,kuleshov-group/caduceus-ps_seqlen-1k_d_model-256_n_layer-4_lr-8e-3,caduceus,sequence,Huggingface 🤗,
+🧬,dna,togethercomputer/evo-1-131k-base,evo,sequence,Github 🐈🐙,
+🧬,dna,togethercomputer/evo-1-8k-base,evo,sequence,Github 🐈🐙,
+🖼️,"image ",google/vit-base-patch16-224-in21k,vit,image,Huggingface 🤗,⭐️
