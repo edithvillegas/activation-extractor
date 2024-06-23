@@ -1,12 +1,12 @@
 model_name,model_type,data_type,modality,source,notes
 facebook/esm2_t12_35M_UR50D,esm,protein 🥩,sequence,Huggingface 🤗,
-" facebook/esm2_t30_150M_UR50D",esm,protein 🥩,sequence,Huggingface 🤗,
-" facebook/esm2_t33_650M_UR50D",esm,protein 🥩,sequence,Huggingface 🤗,
+facebook/esm2_t30_150M_UR50D,esm,protein 🥩,sequence,Huggingface 🤗,
+facebook/esm2_t33_650M_UR50D,esm,protein 🥩,sequence,Huggingface 🤗,
 facebook/esm2_t36_3B_UR50D,esm,protein 🥩,sequence,Huggingface 🤗,
 facebook/esm2_t6_8M_UR50D,esm,protein 🥩,sequence,Huggingface 🤗,
 Rostlab/prot_t5_xl_half_uniref50-enc,prot_t5,protein 🥩,sequence,Huggingface 🤗,
 Rostlab/prot_t5_xl_uniref50,prot_t5,protein 🥩,sequence,Huggingface 🤗,
-" Rostlab/prot_t5_xl_bfd ",prot_t5,protein 🥩,sequence,Huggingface 🤗,⭐️
+Rostlab/prot_t5_xl_bfd,prot_t5,protein 🥩,sequence,Huggingface 🤗,⭐️
 Rostlab/prot_bert_bfd,prot_bert,protein 🥩,sequence,Huggingface 🤗,⭐️
 Rostlab/prot_bert,prot_bert,protein 🥩,sequence,Huggingface 🤗,⭐️
 Rostlab/prot_albert,prot_bert,protein 🥩,sequence,Huggingface 🤗,❗
