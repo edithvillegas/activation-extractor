@@ -34,11 +34,20 @@ def get_layers_to_hook(model, model_type):
         # Protein Sequence Models 🥩
         case "prot_t5":
             n_layers = model.config.num_decoder_layers
-            layers_to_hook = [f"encoder.block.{n}" for n in range(n_layers)] #+ ["encoder.embed_tokens"]
+            layers_to_hook = [f"encoder.block.{n}" for n in range(n_layers)] # ["encoder.embed_tokens"] 
         case "prot_bert":
             n_layers = model.config.num_hidden_layers
-            layers_to_hook = [f"bert.encoder.layer.{n}" for n in range(n_layers)]
+            layers_to_hook = ["embeddings"]+[f"bert.encoder.layer.{n}" for n in range(n_layers)]
+        case "prot_xlnet":
+            n_layers = model.config.num_hidden_layers
+            layers_to_hook = ["word_embedding"]+[f"layer.{n}" for n in range(n_layers)]
+        case "prot_electra":
+            n_layers = model.config.num_hidden_layers
+            layers_to_hook = ["embeddings"]+[f"encoder.layer.{n}" for n in range(n_layers)]
         case "ankh":
+            n_layers = model.config.num_layers
+            layers_to_hook = [f"encoder.block.{n}" for n in range(n_layers)]
+        case "prostt5":
             n_layers = model.config.num_layers
             layers_to_hook = [f"encoder.block.{n}" for n in range(n_layers)]
         

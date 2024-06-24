@@ -73,7 +73,7 @@ def load_model(model_name, model_type, **kwargs):
             model = AutoModelForMaskedLM.from_pretrained(model_name, trust_remote_code=True, **kwargs)
             tokenizer = load_tokenizer(model_name, tokenizer_type='AutoTokenizer', **kwargs)
             
-        case 'prot_t5':
+        case 'prot_t5' | "prostt5" :
             from transformers import T5EncoderModel
             model = T5EncoderModel.from_pretrained(model_name, **kwargs)
             tokenizer = load_tokenizer(model_name, tokenizer_type='T5Tokenizer', **kwargs)
@@ -84,6 +84,14 @@ def load_model(model_name, model_type, **kwargs):
             tokenizer = load_tokenizer(model_name, tokenizer_type="BertTokenizer", 
                                        do_lower_case=False, **kwargs)
 
+        case "prot_xlnet" | "prot_electra":
+            from transformers import AutoModel
+            model = AutoModel.from_pretrained(model_name)
+            # using Prot_Bert tokenizer ❗
+            tokenizer = load_tokenizer("Rostlab/prot_bert", 
+                                       tokenizer_type='AutoTokenizer', 
+                                       **kwargs)
+            
         case 'ankh':
             from transformers import T5EncoderModel
             #model = AutoModelForSeq2SeqLM.from_pretrained(model_name, **kwargs)

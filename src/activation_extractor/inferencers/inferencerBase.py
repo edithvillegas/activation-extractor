@@ -47,7 +47,7 @@ class InferencerBase:
         self.inference_fun = define_inference_function(self.model_type, self.model, 
                                                        self.tokenizer, self.device)
         
-    def tokenize(self, sequence_input):
+    def tokenize(self, sequence_input, **kwargs):
         """
         Tokenize a sequence batch.
         
@@ -55,7 +55,7 @@ class InferencerBase:
         :type sequence_input: list of strings
         :return: the tokenized inputs
         """
-        tokenized_inputs = self.tokenize_fun(sequence_input)
+        tokenized_inputs = self.tokenize_fun(sequence_input, **kwargs)
         return tokenized_inputs
 
     def inference(self, tokenized_input):

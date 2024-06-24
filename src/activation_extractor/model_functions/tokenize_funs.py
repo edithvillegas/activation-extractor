@@ -46,7 +46,7 @@ def define_tokenize_function(model_type, tokenizer, device=None):
 
        
         #🥩
-        case "prot_bert": 
+        case "prot_t5" | "prot_bert" | "prot_xlnet" | "prot_electra" : 
             #### start function definition
             def tokenize_fun(sequence_inputs, **kwargs):
                 # replace all rare/ambiguous amino acids by X and introduce white-space between all amino acids
@@ -56,6 +56,32 @@ def define_tokenize_function(model_type, tokenizer, device=None):
                 return tokenized 
              #### end function definition
 
+        #🥩 protein sequence, ⛓️🥩 3di structural sequence
+        case "prostt5" : 
+            #### start function definition
+            def tokenize_fun(sequence_inputs, sequence_type=None, **kwargs):
+                # replace all rare/ambiguous amino acids by X and introduce white-space between all amino acids
+                sequence_inputs = [" ".join(list(re.sub(r"[UZOB]", "X", sequence))) for sequence in sequence_inputs]
+                
+                if sequence_type is None:
+                    # add pre-fixes accordingly (this already expects 3Di-sequences to be lower-case)
+                    # if you go from AAs to 3Di (or if you want to embed AAs), you need to prepend "<AA2fold>"
+                    # if you go from 3Di to AAs (or if you want to embed 3Di), you need to prepend "<fold2AA>"
+                    sequence_inputs = [ "<AA2fold>" + " " + s if s.isupper() else "<fold2AA>" + " " + s
+                                          for s in sequence_inputs
+                                        ]
+                else:
+                    #if sequence type is given, overwrite the above
+                    sequence_inputs = [ "<AA2fold>" + " " + s if sequence_type=="protein" else "<fold2AA>" + " " + s
+                                          for s in sequence_inputs
+                                        ]
+                
+                
+                tokenized = tokenizer.batch_encode_plus(sequence_inputs, add_special_tokens=True, 
+                                                        padding="longest", return_tensors='pt')
+                return tokenized 
+             #### end function definition
+    
         #🥩
         case "ankh":
             #### start function definition

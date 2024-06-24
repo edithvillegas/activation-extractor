@@ -58,7 +58,7 @@ def define_inference_function(model_type, model, tokenizer, device):
             #### end function definition    
 
         #🥩
-        case "prot_bert":
+        case "prot_bert" | "prot_xlnet" | "prot_electra":
             #### start function definition
             def inference_fun(tokenized_inputs, device, **kwargs):
                 
@@ -66,6 +66,18 @@ def define_inference_function(model_type, model, tokenizer, device):
                     tokenized_inputs[key]=tokenized_inputs[key].to(device)
                     
                 outputs = model(**tokenized_inputs)
+                return outputs
+            #### end function definition   
+
+        case "prostt5":
+            #### start function definition
+            def inference_fun(tokenized_inputs, device, **kwargs):
+                
+                for key in tokenized_inputs.keys():
+                    tokenized_inputs[key]=tokenized_inputs[key].to(device)
+                    
+                outputs = model(tokenized_inputs["input_ids"],
+                               attention_mask=tokenized_inputs["attention_mask"])
                 return outputs
             #### end function definition   
             
