@@ -57,6 +57,12 @@ def get_layers_to_hook(model, model_type):
             n_layers = model.config.num_hidden_layers
             layers_to_hook = [f"vit.encoder.layer.{n}" for n in range(n_layers)] 
 
+        #multimodal 🖼️/📚
+        case "clip":
+            layers_to_hook = (["text_model.embeddings", "vision_model.embeddings"]
+                            + [f"text_model.encoder.layers.{n}" for n in range(model.text_model.config.num_hidden_layers)]
+                            + [f"vision_model.encoder.layers.{n}" for n in range(model.vision_model.config.num_hidden_layers)]
+                            + ["visual_projection", "text_projection"])
         #default
         case _:
             raise ValueError(f"model_type not valid")

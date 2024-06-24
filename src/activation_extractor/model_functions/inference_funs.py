@@ -19,7 +19,8 @@ def define_inference_function(model_type, model, tokenizer, device):
     :return: the function used to do the inference
     """
     match model_type:
-
+    
+        # Biological Sequences 🥩🧬 =============================================================
         #🥩,🧬 
         case "esm" | "nucleotide-transformer" :  
             #### start function definition
@@ -82,7 +83,7 @@ def define_inference_function(model_type, model, tokenizer, device):
             #### end function definition   
             
 
-        #default inference
+        #default inference for sequences
         #🧬, 🧬
         case "hyenadna" | "evo" | "caduceus" :
             #### start function definition
@@ -92,6 +93,31 @@ def define_inference_function(model_type, model, tokenizer, device):
                 return outputs
             #### end function definition    
 
+    
+        # Images 🖼️ ================================================================
+        #🖼️
+        case "vit":
+            #### start function definition
+            def inference_fun(processed_image, device, **kwargs):
+                pixel_values = processed_image["pixel_values"].to(device)
+                outputs = model(pixel_values)
+                return outputs
+            #### end function definition
+    
+        #🖼️/📚 
+        case "clip":
+            #### start function definition
+            def inference_fun(processed_input, device, **kwargs):
+                for key in processed_input.keys():
+                    processed_input[key]=processed_input[key].to(device)
+                outputs = model(
+                                input_ids=processed_input["input_ids"], 
+                                attention_mask=processed_input["attention_mask"], 
+                                pixel_values=processed_input["pixel_values"],
+                    )
+                return outputs
+            #### end function definition
+    
     #return rightly defined inference function
     return inference_fun
     
