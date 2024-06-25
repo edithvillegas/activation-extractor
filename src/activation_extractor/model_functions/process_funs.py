@@ -16,13 +16,20 @@ def define_process_function(model_type, processor, device=None):
     """
     match model_type:
         #images 🖼️
-        case "vit":
+        case "vit" | "igpt" | "convnext" | "resnet" | "swin" :
             #### start function definition
             def process_fun(image, **kwargs):
                 processed = processor(images=image, return_tensors="pt")
                 return processed
             #### end function definition
-    
+
+        case "timm":
+            #### start function definition
+            def process_fun(image, **kwargs):
+                processed = processor(image).unsqueeze(0)
+                return processed
+            #### end function definition
+
         #multimodal 🖼️/📚 
         case "clip" :  
             #### start function definition

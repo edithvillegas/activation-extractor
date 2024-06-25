@@ -96,11 +96,23 @@ def define_inference_function(model_type, model, tokenizer, device):
     
         # Images 🖼️ ================================================================
         #🖼️
-        case "vit":
+        case "vit" | "igpt" | "convnext" | "resnet" | "swin":
             #### start function definition
             def inference_fun(processed_image, device, **kwargs):
-                pixel_values = processed_image["pixel_values"].to(device)
-                outputs = model(pixel_values)
+                
+                for key in processed_image.keys():
+                    processed_image[key]=processed_image[key].to(device)
+                    
+                outputs = model(**processed_image)
+                
+                return outputs
+            #### end function definition
+
+        case "timm":
+            #### start function definition
+            def inference_fun(processed_image, device, **kwargs):
+                processed_image=processed_image.to(device)
+                outputs = model(processed_image)
                 return outputs
             #### end function definition
     

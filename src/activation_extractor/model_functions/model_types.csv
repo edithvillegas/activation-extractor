@@ -15,48 +15,48 @@ type,data_type,model_name,model_type,modality,source,notes
 🥩/⛓️,protein/3di,Rostlab/ProstT5,prostt5,sequence,Huggingface 🤗,⭐️
 🥩,protein,ElnaggarLab/ankh-base,ankh,sequence,Huggingface 🤗,
 🥩,protein,ElnaggarLab/ankh-large,ankh,sequence,Huggingface 🤗,
-,,,,,,
-,,,,,,
-,,,,,,
 🧬,dna,InstaDeepAI/nucleotide-transformer-v2-100m-multi-species,nucleotide-transformer,sequence,Huggingface 🤗,
 🧬,dna,InstaDeepAI/nucleotide-transformer-v2-250m-multi-species,nucleotide-transformer,sequence,Huggingface 🤗,
 🧬,dna,InstaDeepAI/nucleotide-transformer-v2-500m-multi-species,nucleotide-transformer,sequence,Huggingface 🤗,
 🧬,dna,InstaDeepAI/nucleotide-transformer-v2-50m-multi-species,nucleotide-transformer,sequence,Huggingface 🤗,
-🧬,dna,LongSafari/hyenadna-large-1m-seqlen-hf,nucleotide-transformer,sequence,Huggingface 🤗,
-🧬,dna,LongSafari/hyenadna-medium-160k-seqlen-hf,nucleotide-transformer,sequence,Huggingface 🤗,
-🧬,dna,LongSafari/hyenadna-medium-450k-seqlen-hf,nucleotide-transformer,sequence,Huggingface 🤗,
-🧬,dna,LongSafari/hyenadna-small-32k-seqlen-hf,nucleotide-transformer,sequence,Huggingface 🤗,
-🧬,dna,LongSafari/hyenadna-tiny-16k-seqlen-d128-hf,nucleotide-transformer,sequence,Huggingface 🤗,
+🧬,dna,LongSafari/hyenadna-large-1m-seqlen-hf,hyenadna,sequence,Huggingface 🤗,
+🧬,dna,LongSafari/hyenadna-medium-160k-seqlen-hf,hyenadna,sequence,Huggingface 🤗,
+🧬,dna,LongSafari/hyenadna-medium-450k-seqlen-hf,hyenadna,sequence,Huggingface 🤗,
+🧬,dna,LongSafari/hyenadna-small-32k-seqlen-hf,hyenadna,sequence,Huggingface 🤗,
+🧬,dna,LongSafari/hyenadna-tiny-16k-seqlen-d128-hf,hyenadna,sequence,Huggingface 🤗,
 🧬,dna,kuleshov-group/caduceus-ps_seqlen-131k_d_model-256_n_layer-16,caduceus,sequence,Huggingface 🤗,
 🧬,dna,kuleshov-group/caduceus-ps_seqlen-1k_d_model-118_n_layer-4_lr-8e-3,caduceus,sequence,Huggingface 🤗,
 🧬,dna,kuleshov-group/caduceus-ps_seqlen-1k_d_model-256_n_layer-4_lr-8e-3,caduceus,sequence,Huggingface 🤗,
 🧬,dna,togethercomputer/evo-1-131k-base,evo,sequence,Github 🐈🐙,
 🧬,dna,togethercomputer/evo-1-8k-base,evo,sequence,Github 🐈🐙,
-🖼️/📚,image/text,openai/clip-vit-base-patch16,clip,multi,Huggingface 🤗,📋 to do
-🖼️/📚,image/text,openai/clip-vit-base-patch32,clip,multi,Huggingface 🤗,📋
-🖼️/📚,image/text,openai/clip-vit-large-patch14,clip,multi,Huggingface 🤗,📋
-🖼️/📚,image/text,openai/clip-vit-large-patch14-336,clip,multi,Huggingface 🤗,📋
-🖼️,"image ",openai/imagegpt-small,igpt,image,Huggingface 🤗,📋
-🖼️,"image ",openai/imagegpt-medium,igpt,image,Huggingface 🤗,📋
-🖼️,"image ",openai/imagegpt-large,igpt,image,Huggingface 🤗,📋
-🖼️,"image ",google/vit-base-patch16-224-in21k,vit,image,Huggingface 🤗,📋
-🖼️,"image ",google/vit-large-patch16-224-in21k,vit,image,Huggingface 🤗,📋
-🖼️,"image ",google/vit-huge-patch14-224-in21k,vit,image,Huggingface 🤗,📋
+🖼️/📚,image/text,openai/clip-vit-base-patch16,clip,multi,Huggingface 🤗,⭐️
+🖼️/📚,image/text,openai/clip-vit-base-patch32,clip,multi,Huggingface 🤗,⭐️
+🖼️/📚,image/text,openai/clip-vit-large-patch14,clip,multi,Huggingface 🤗,⭐️
+🖼️/📚,image/text,openai/clip-vit-large-patch14-336,clip,multi,Huggingface 🤗,⭐️
+🖼️,"image ",openai/imagegpt-small,igpt,image,Huggingface 🤗,⭐️
+🖼️,"image ",openai/imagegpt-medium,igpt,image,Huggingface 🤗,⭐️
+🖼️,"image ",openai/imagegpt-large,igpt,image,Huggingface 🤗,⭐️
+🖼️,"image ",google/vit-base-patch16-224-in21k,vit,image,Huggingface 🤗,⭐️
+🖼️,"image ",google/vit-large-patch16-224-in21k,vit,image,Huggingface 🤗,⭐️
+🖼️,"image ",google/vit-huge-patch14-224-in21k,vit,image,Huggingface 🤗,⭐️
+,,,,,,
+,,,,,,
+,,,,,,
 🖼️,"image ",hustvl/Vim-tiny,vmamba,image,Huggingface 🤗,📋
 🖼️,"image ",hustvl/Vim-small-midclstok,vmamba,image,Huggingface 🤗,📋
 🖼️,"image ",hustvl/Vim-tiny-midclstok,vmamba,image,Huggingface 🤗,📋
-🖼️,"image ",facebook/convnext-tiny-224,convnext,image,Huggingface 🤗,📋
-🖼️,"image ",facebook/convnext-small-224,convnext,image,Huggingface 🤗,📋
-🖼️,"image ",facebook/convnext-base-224,convnext,image,Huggingface 🤗,📋
-🖼️,"image ",facebook/convnext-large-224,convnext,image,Huggingface 🤗,📋
-🖼️,"image ",facebook/convnext-xlarge-224-22k-1k,convnext,image,Huggingface 🤗,📋
-🖼️,"image ",timm/vgg16.tv_in1k,VGG16,image,Huggingface 🤗,📋
-🖼️,"image ",microsoft/resnet-50,resnet50,image,Huggingface 🤗,📋
-🖼️,"image ",microsoft/swin-tiny-patch4-window7-224,swin,image,Huggingface 🤗,📋
-🖼️,"image ",microsoft/swin-small-patch4-window7-224,swin,image,Huggingface 🤗,📋
-🖼️,"image ",microsoft/swin-base-patch4-window7-224,swin,image,Huggingface 🤗,📋
-🖼️,"image ",microsoft/swin-large-patch4-window7-224,swin,image,Huggingface 🤗,📋
-📚,text,state-spaces/mamba-1.4b-hf,mamba,sequence,Huggingface 🤗,📋
+🖼️,"image ",facebook/convnext-tiny-224,convnext,image,Huggingface 🤗,⭐️
+🖼️,"image ",facebook/convnext-small-224,convnext,image,Huggingface 🤗,⭐️
+🖼️,"image ",facebook/convnext-base-224,convnext,image,Huggingface 🤗,⭐️
+🖼️,"image ",facebook/convnext-large-224,convnext,image,Huggingface 🤗,⭐️
+🖼️,"image ",facebook/convnext-xlarge-224-22k-1k,convnext,image,Huggingface 🤗,⭐️
+🖼️,"image ",timm/vgg16.tv_in1k,timm,image,Huggingface 🤗,📋
+🖼️,"image ",microsoft/resnet-50,resnet,image,Huggingface 🤗,⭐️
+🖼️,"image ",microsoft/swin-tiny-patch4-window7-224,swin,image,Huggingface 🤗,⭐️
+🖼️,"image ",microsoft/swin-small-patch4-window7-224,swin,image,Huggingface 🤗,⭐️
+🖼️,"image ",microsoft/swin-base-patch4-window7-224,swin,image,Huggingface 🤗,⭐️
+🖼️,"image ",microsoft/swin-large-patch4-window7-224,swin,image,Huggingface 🤗,⭐️
+📚,text,state-spaces/mamba-1.4b-hf,mamba,sequence,Huggingface 🤗,⭐️
 📚,text,state-spaces/mamba-790m-hf,mamba,sequence,Huggingface 🤗,📋
 📚,text,state-spaces/mamba-370m-hf,mamba,sequence,Huggingface 🤗,📋
 📚,text,state-spaces/mamba-130m-hf,mamba,sequence,Huggingface 🤗,📋
@@ -74,11 +74,12 @@ type,data_type,model_name,model_type,modality,source,notes
 📚,text,togethercomputer/StripedHyena-Nous-7B,stripedhyena,sequence,Huggingface 🤗,📋
 📚,text,togethercomputer/StripedHyena-Hessian-7B,stripedhyena,sequence,Huggingface 🤗,📋
 📚,text,Zymrael/hyena-small-150b-tok,hyena,sequence,Huggingface 🤗,📋
-📚,text,H3,,,,
-,,,,,,
-,,,,,,
-,,,,,,
-,,,,,,
+📚,text,H3,,,,📋
+🥩/⛓️,protein/structure,ESM3,,,,📋
+🥩,protein/MSA,Unifold,,,,📋
+🥩,protein/PTM,PTM-Mamba,,,,📋
+🥩,protein/family,ProtMamba,,,,📋
+🥩,protein/MSA,MSA-Transformer,,,,📋
 ,,,,,,
 ,,,,,,
 ,,,,,,

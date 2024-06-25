@@ -36,8 +36,16 @@ def load_processor(model_name, processor_type, **kwargs):
         #images 🖼️
         case "AutoProcessor":
             from transformers import AutoImageProcessor
-            processor = AutoImageProcessor.from_pretrained(model_name
-                                                          )
+            processor = AutoImageProcessor.from_pretrained(model_name)
+
+        case "igptProcessor":
+            from transformers import ImageGPTImageProcessor, ImageGPTModel
+            processor = ImageGPTImageProcessor.from_pretrained(model_name)
+
+        case "convnextProcessor":
+            from transformers import ConvNextImageProcessor
+            processor = ConvNextImageProcessor.from_pretrained(model_name)
+            
         #multimodal 🖼️/📚 
         case "CLIP":
             from transformers import CLIPProcessor
@@ -126,10 +134,45 @@ def load_model(model_name, model_type, **kwargs):
         #image 🖼️ --- 
         case "vit":
             from transformers import ViTForMaskedImageModeling
-            model = ViTForMaskedImageModeling.from_pretrained(model_name)
             processor = load_processor(model_name, processor_type="AutoProcessor")
+            model = ViTForMaskedImageModeling.from_pretrained(model_name)
             return model, processor
 
+        case "igpt":
+            from transformers import ImageGPTModel
+            processor = load_processor(model_name, processor_type="igptProcessor")
+            model = ImageGPTModel.from_pretrained(model_name)
+            return model, processor
+
+        case "swin":
+            from transformers import SwinForMaskedImageModeling
+            processor = load_processor(model_name, processor_type="AutoProcessor")
+            model = SwinForMaskedImageModeling.from_pretrained(model_name)
+            return model, processor
+
+        case "convnext":
+            from transformers import ConvNextForImageClassification
+            processor = load_processor(model_name, processor_type="convnextProcessor")
+            model = ConvNextForImageClassification.from_pretrained(model_name)
+            return model, processor
+
+        case "resnet":
+            from transformers import ResNetForImageClassification
+            processor = load_processor(model_name, processor_type="AutoProcessor")
+            model = ResNetForImageClassification.from_pretrained(model_name)
+            return model, processor
+
+        case "timm":
+            import timm
+            #load model
+            model_name = model_name.split("/")[1]
+            model = timm.create_model(model_name, pretrained=True)
+            # get model specific transforms (normalization, resize)
+            data_config = timm.data.resolve_model_data_config(model)
+            transforms = timm.data.create_transform(**data_config, is_training=False)
+            #return
+            return model, transforms
+            
         #multimodal 🖼️/📚 --- 
         case "clip":
             from transformers import CLIPModel
