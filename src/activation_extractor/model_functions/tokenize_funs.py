@@ -17,7 +17,7 @@ def define_tokenize_function(model_type, tokenizer, device=None):
     match model_type:
 
         #🥩,🧬,🧬,🧬 
-        case "esm" | "nucleotide-transformer" | "hyenadna" | "caduceus":  
+        case "esm" | "nucleotide-transformer" | "hyenadna" | "caduceus" | "dnabert":  
             #### start function definition
             def tokenize_fun(sequence_inputs, **kwargs):
                 tokenized = tokenizer.batch_encode_plus(sequence_inputs, 

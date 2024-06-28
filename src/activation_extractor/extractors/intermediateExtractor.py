@@ -19,7 +19,7 @@ class IntermediateExtractor(IntermediateExtractorBase):
       (if on GPU) after formatting them to a numpy array.
       """
       for name in self.layer_list:
-          self.intermediate_outputs[name] = embeddings_to_numpy(self.intermediate_outputs[name])  
+          self.intermediate_outputs[name] = embedding_to_numpy(self.intermediate_outputs[name])  
     
     def save_outputs(self, output_folder, reset=False, move_to_cpu=True, 
                    saving_type="numpy_compressed", emb_format='full'):
@@ -41,6 +41,7 @@ class IntermediateExtractor(IntermediateExtractorBase):
       #make output folder
       if reset: shutil.rmtree(output_folder, ignore_errors=True)
       os.makedirs(output_folder, exist_ok=True)
+      os.chmod(output_folder, mode=0o777)
     
       #save each layer 
       for name,outputs in self.intermediate_outputs.items():

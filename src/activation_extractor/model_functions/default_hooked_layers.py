@@ -92,6 +92,10 @@ def get_layers_to_hook(model, model_type):
             for name, module in model.named_modules():
                 layers_to_hook.append(name)
 
+        case "visual-mamba":
+            pass
+            
+
         #multimodal 🖼️/📚
         case "clip":
             layers_to_hook = (["text_model.embeddings", "vision_model.embeddings"]

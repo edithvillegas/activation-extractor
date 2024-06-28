@@ -3,7 +3,7 @@ requires      = ["setuptools>=61.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
 [project]
 name = "activation_extractor"
-version = "0.0.0"
+version = "0.0.1"
 description = "Extracting intermediate activations/embeddings from any Pytorch model"
 readme = "README.md"
 authors = [{ name = "Edith Villegas", email = "edith.villegas@areasciencepark.it" }]
@@ -22,7 +22,7 @@ build = []
 dev   = ["bumpver", "pytest"]
 
 [project.scripts]
-extract = "activation_extractor.__main__:main"
+nnextract = "activation_extractor.scripts.inference:main"
 
 [project.urls]
 repository    = "https://github.com/edithvillegas/activation-extractor"
