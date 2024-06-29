@@ -174,19 +174,18 @@ def main_inference(model_name, output_folder, emb_format, save_method, max_batch
     inferencer = Inferencer(model_name, device=device, half=False)
 
     # print to log
-    
     print(f'✔️ {model_name} loaded', file=logfile, flush=True)
     print(f'Output folder is: {output_folder}')
     print(f"✔️ {model_name}", file=sys.stderr)
 
     #intermediate activation extractor
-    layers_to_hook = get_layers_to_hook(inferencer.model, inferencer.model_type)
+    layers_to_hook, structure = get_layers_to_hook(inferencer.model, inferencer.model_type, return_structure=True)
     extractor = IntermediateExtractor(inferencer.model, layers_to_hook)
     extractor.register_hooks()
 
     #save inference params to file
     with open(f'{output_folder}/hooked_layers.pkl', 'wb') as file:
-        pickle.dump(layers_to_hook, file)
+        pickle.dump(structure, file)
         
     with open(f"{output_folder}/inference_args.txt", 'w') as file:
         file.write("🔸 Inference Arguments \n")
@@ -196,7 +195,7 @@ def main_inference(model_name, output_folder, emb_format, save_method, max_batch
         file.write("🔸 Data Arguments \n")
         file.write(str(data_args)+"\n")
         file.write("🔸 Hooked Layers \n")
-        file.write(str(layers_to_hook))
+        file.write(str(structure))
 
     #Inference Loop ------------------------------------------
     #measure total execution time
@@ -215,6 +214,7 @@ def main_inference(model_name, output_folder, emb_format, save_method, max_batch
         except Exception as e:
             print(f"❌ {model_name}", file=logfile, flush=True)
             print(f'Exception: {e}', file=logfile, flush=True)
+            print(f'Exception: {e}', file=sys.stderr)
             #exit
             logfile.close()
             sys.exit()
@@ -257,6 +257,7 @@ def main_inference(model_name, output_folder, emb_format, save_method, max_batch
 def main():
     #parse arguments
     model_name, output_folder, emb_format, save_method, max_batches, data_args = argument_parser()
+    
     #execute main
     main_inference(model_name, output_folder, emb_format, save_method, max_batches, data_args)
     

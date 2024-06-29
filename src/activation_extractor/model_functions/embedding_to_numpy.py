@@ -3,6 +3,8 @@ from transformers.modeling_outputs import (MaskedLMOutput,
                                             BaseModelOutputWithNoAttention, 
                                             BaseModelOutputWithPastAndCrossAttentions)
 
+from transformers.models.xlnet.modeling_xlnet import XLNetModelOutput
+
 def embedding_to_numpy(embeddings):
     """
     Converts different types of module outputs to a numpy array.
@@ -29,10 +31,12 @@ def embedding_to_numpy(embeddings):
     if isinstance(embeddings, MaskedLMOutput): 
         embeddings = embeddings['logits'] 
         
-    #HYENA or ANKH output object
+    #HYENA or ANKH/PROTT5 or PROTBERT output object
     if (isinstance(embeddings, BaseModelOutputWithNoAttention) 
-        or isinstance(embeddings, BaseModelOutputWithPastAndCrossAttentions)):
+        or isinstance(embeddings, BaseModelOutputWithPastAndCrossAttentions)
+        or isinstance(embeddings, XLNetModelOutput)):
         embeddings = embeddings['last_hidden_state']  
+
     #convert output object to tensor -------------------------
     
     #float conversions for tensors 

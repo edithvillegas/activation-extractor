@@ -2,7 +2,7 @@
 This file contains functions to get relevant layer (module) names to hook from the models included by default.
 """
 
-def get_layers_to_hook(model, model_type):
+def get_layers_to_hook(model, model_type, modality="sequence", return_structure=False):
     """
     Get a list of default layers to hook (extract activations from) for each model type.
 
@@ -13,52 +13,60 @@ def get_layers_to_hook(model, model_type):
     :return: the list of layers/modules names
     :rtype: list
     """
-    
+    ### Sequence Models ####
     match model_type:
         # Protein Sequence & DNA 🥩, 🧬
         case "esm" | "nucleotide-transformer": 
             n_layers = model.config.num_hidden_layers
-            layers_to_hook = ["esm.embeddings", "lm_head"] + [f"esm.encoder.layer.{n}.output" for n in range(0,n_layers)]
+            embeddings = ["esm.embeddings"]
+            layers = [f"esm.encoder.layer.{n}.output" for n in range(0,n_layers)]
             
         # DNA Models 🧬
         case "hyenadna":
             n_layers = model.config.n_layer
-            layers_to_hook = ["backbone.embeddings"] + [f"backbone.layers.{n}" for n in range(n_layers)]
+            embeddings = ["backbone.embeddings"]
+            layers = [f"backbone.layers.{n}" for n in range(n_layers)]
             
         case "evo":
             n_layers = model.config.num_layers
-            layers_to_hook = [f"blocks.{n}" for n in range(n_layers)] # + ["embedding_layer", "unembed"]
+            embeddings = [] #❗
+            layers = [f"blocks.{n}" for n in range(n_layers)] # + ["embedding_layer", "unembed"]
             
         case "caduceus":
             n_layers = model.config.n_layer
-            layers_to_hook = [f"caduceus.backbone.layers.{n}.mixer" for n in range(n_layers)] # + ["embedding_layer", "unembed"]
-            
+            embeddings = [] #❗
+            layers = [f"caduceus.backbone.layers.{n}.mixer" for n in range(n_layers)] # + ["embedding_layer", "unembed"]
             
         # Protein Sequence Models 🥩
         case "prot_t5":
             n_layers = model.config.num_decoder_layers
-            layers_to_hook = [f"encoder.block.{n}" for n in range(n_layers)] # ["encoder.embed_tokens"] 
+            embeddings = ["shared"]
+            layers = [f"encoder.block.{n}" for n in range(n_layers)] 
             
         case "prot_bert":
             n_layers = model.config.num_hidden_layers
-            layers_to_hook = ["embeddings"]+[f"bert.encoder.layer.{n}" for n in range(n_layers)]
+            embeddings = ["bert.embeddings"]
+            layers = [f"bert.encoder.layer.{n}" for n in range(n_layers)]
             
         case "prot_xlnet":
             n_layers = model.config.num_hidden_layers
-            layers_to_hook = ["word_embedding"]+[f"layer.{n}" for n in range(n_layers)]
+            embeddings = ["word_embedding"]
+            layers = [f"layer.{n}" for n in range(n_layers)]
             
         case "prot_electra":
             n_layers = model.config.num_hidden_layers
-            layers_to_hook = ["embeddings"]+[f"encoder.layer.{n}" for n in range(n_layers)]
+            embeddings = ["embeddings"]
+            layers = [f"encoder.layer.{n}" for n in range(n_layers)]
             
         case "ankh":
             n_layers = model.config.num_layers
-            layers_to_hook = [f"encoder.block.{n}" for n in range(n_layers)]
+            embeddings = ["shared"]
+            layers = embeddings + [f"encoder.block.{n}" for n in range(n_layers)]
             
         case "prostt5":
             n_layers = model.config.num_layers
-            layers_to_hook = [f"encoder.block.{n}" for n in range(n_layers)]
-        
+            embeddings = ["shared"]
+            layers = [f"encoder.block.{n}" for n in range(n_layers)]
 
         # Image Models 🖼️
         case "vit":
@@ -105,5 +113,22 @@ def get_layers_to_hook(model, model_type):
         #default
         case _:
             raise ValueError(f"model_type not valid")
-    
-    return layers_to_hook
+
+    #construct structure 
+    if modality=="sequence":
+        layers_to_hook = embeddings + layers
+        
+        structure = {
+            "embeddings": embeddings,
+            "layers": layers,
+        }
+    else:
+        structure = {
+            "layers": layers_to_hook,
+        }
+
+    #return
+    if return_structure==False:
+        return layers_to_hook
+    else:
+        return layers_to_hook, structure
