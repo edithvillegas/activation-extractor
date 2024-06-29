@@ -94,6 +94,22 @@ def define_tokenize_function(model_type, tokenizer, device=None):
                                     return_tensors="pt")
                 return tokenized
            #### end function definition
-
+    
+        #🥩/🧱/🌟
+        case "esm3":
+            #### start function definition
+            def tokenize_fun(sequence_inputs):
+                """
+                ESM3 just for sequences
+                """
+                from esm.utils.encoding import tokenize_sequence
+                input_ids = tokenize_sequence(sequence=sequence_inputs[0], #input is a string not list
+                                                sequence_tokenizer=tokenizer,
+                                                add_special_tokens=True
+                                             ).unsqueeze(0) #shape to (1,L)
+                tokenized = {'input_ids' : input_ids}
+                return tokenized
+           #### end function definition
+            
     #return the rightly defined tokenizer function
     return tokenize_fun

@@ -129,7 +129,19 @@ def define_inference_function(model_type, model, tokenizer, device):
                     )
                 return outputs
             #### end function definition
-    
+
+        #🥩/🧱/🌟
+        case "esm3":
+            #### start function definition
+            def inference_fun(processed_input, device, **kwargs):
+                """
+                ESM3 forward pass, just for sequence input.
+                """
+                processed_input = processed_input['input_ids'].to(device)
+                outputs = model.forward(sequence_tokens = processed_input)
+                return outputs
+            #### end function definition
+
     #return rightly defined inference function
     return inference_fun
     

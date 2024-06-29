@@ -15,6 +15,7 @@ def define_process_function(model_type, processor, device=None):
     :return: the function used to process the inputs
     """
     match model_type:
+        
         #images 🖼️
         case "vit" | "igpt" | "convnext" | "resnet" | "swin" :
             #### start function definition

@@ -131,6 +131,14 @@ def load_model(model_name, model_type, **kwargs):
             tokenizer = load_tokenizer(model_name, tokenizer_type='AutoTokenizer', **kwargs)
             return model, tokenizer
 
+        case "esm3": #🥩/🧱/🌟
+            from esm.models.esm3 import ESM3
+            from esm.tokenization.sequence_tokenizer import EsmSequenceTokenizer
+            
+            model: ESM3InferenceClient = ESM3.from_pretrained("esm3_sm_open_v1")
+            tokenizer = EsmSequenceTokenizer()
+            return model, tokenizer
+
         #image 🖼️ --- 
         case "vit":
             from transformers import ViTForMaskedImageModeling

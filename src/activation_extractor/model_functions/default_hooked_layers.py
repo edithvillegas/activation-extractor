@@ -62,11 +62,20 @@ def get_layers_to_hook(model, model_type, modality="sequence", return_structure=
             n_layers = model.config.num_layers
             embeddings = ["shared"]
             layers = embeddings + [f"encoder.block.{n}" for n in range(n_layers)]
-            
+
+        # Protein sequence / 3di 🥩/⛓️
         case "prostt5":
             n_layers = model.config.num_layers
             embeddings = ["shared"]
             layers = [f"encoder.block.{n}" for n in range(n_layers)]
+
+        # Protein sequence / structure / function 🥩/🧱/🌟
+        case "esm3":
+            embeddings = ["encoder.sequence_embed"]
+            layers = (
+                ["transformer.blocks.0.attn", "transformer.blocks.0.geom_attn"]
+                +[f"transformer.blocks.{n}" for n in range(47+1)]
+            )
 
         # Image Models 🖼️
         case "vit":
