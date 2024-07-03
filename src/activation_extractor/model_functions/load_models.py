@@ -3,6 +3,8 @@ This file contains functions to load models, tokenizers, etc.
 Because not all models are from huggingface and they might not all be installed, 
 the right imports are directly inside the corresponding loading functions. 
 """
+import os
+
 #⏳ load tokenizers 
 def load_tokenizer(model_name, tokenizer_type, **kwargs):
     """
@@ -115,10 +117,57 @@ def load_model(model_name, model_type, **kwargs):
                                        do_lower_case=False, **kwargs)
             return model, tokenizer
 
-        case "prot_xlnet" | "prot_electra":
-            from transformers import AutoModel
+        case "prot_xlnet":
+            from transformers import XLNetTokenizer, XLNetModel
+            model = XLNetModel.from_pretrained(model_name, 
+                                               output_attentions=False)
+            tokenizer = XLNetTokenizer.from_pretrained(model_name, 
+                                                       do_lower_case=False)
+            return model, tokenizer
+
+        case "prot_electra":
+            from transformers import (ElectraTokenizer, 
+                                        ElectraForMaskedLM, ElectraModel, 
+                                        AutoModel)
+            from activation_extractor.utils.download import download_file
+
+            #crate folder to download models
+            FolderPath = f"{os.environ['TRANSFORMERS_CACHE']}/electra/{model_name}"
+            os.makedirs(FolderPath, exist_ok=True)
+
+            # #corresponding urls for each model
+            # if model_name=="Rostlab/prot_electra_generator_bfd":
+            #     ModelUrl = 'https://www.dropbox.com/s/5x5et5q84y3r01m/pytorch_model.bin?dl=1'
+            #     ConfigUrl = 'https://www.dropbox.com/s/9059fvix18i6why/config.json?dl=1'
+                
+            # if model_name=="Rostlab/prot_electra_discriminator_bfd":
+            #     ModelUrl = 'https://www.dropbox.com/s/9ptrgtc8ranf0pa/pytorch_model.bin?dl=1'
+            #     ConfigUrl = 'https://www.dropbox.com/s/jq568evzexyla0p/config.json?dl=1'
+
+            # #download files
+            # ModelFilePath = os.path.join(FolderPath, 'pytorch_model.bin')
+            # ConfigFilePath = os.path.join(FolderPath, 'config.json')
+            # download_file(ModelUrl, ModelFilePath)
+            # download_file(ConfigUrl, ConfigFilePath)
+
+            # #create model
+            # # 
+            # if model_name=="Rostlab/prot_electra_generator_bfd":
+            #     model = ElectraForMaskedLM.from_pretrained(FolderPath, output_attentions=False)
+                
+            # if model_name=="Rostlab/prot_electra_discriminator_bfd":
+            #     model = ElectraModel.from_pretrained(FolderPath, output_attentions=False)
+
             model = AutoModel.from_pretrained(model_name)
-            # using Prot_Bert tokenizer ❗
+            
+            #tokenizer
+            # vocabUrl = 'https://www.dropbox.com/s/wck3w1q15bc53s0/vocab.txt?dl=1'
+            # vocabFilePath = f"{FolderPath}/vocab.txt"
+            # download_file(vocabUrl, vocabFilePath)
+            
+            # tokenizer = ElectraTokenizer(vocabFilePath, do_lower_case=False)
+            
+            #using Prot_Bert tokenizer ❗
             tokenizer = load_tokenizer("Rostlab/prot_bert", 
                                        tokenizer_type='AutoTokenizer', 
                                        **kwargs)

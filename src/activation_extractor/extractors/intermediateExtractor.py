@@ -22,13 +22,15 @@ class IntermediateExtractor(IntermediateExtractorBase):
           self.intermediate_outputs[name] = embedding_to_numpy(self.intermediate_outputs[name])  
     
     def save_outputs(self, output_folder, reset=False, move_to_cpu=True, 
-                   saving_type="numpy_compressed", emb_format='full'):
+                   save_method="numpy_compressed", emb_format='full',
+                    sequence_axis=1):
       """
       Save intermediate activation dictionary to output folder.
       You can choose:
       
       * the saving function (numpy_compressed or numpy) 
       * the embedding format (full, mean, LT: last token).
+      * sequence_axis : sequence length axis to take mean or last token from
       """
     
       #check the format
@@ -48,12 +50,19 @@ class IntermediateExtractor(IntermediateExtractorBase):
           # full, mean or last token embeddings 
           match emb_format:
               case 'mean':
-                  outputs = np.mean(outputs,axis=1)
+                outputs = np.mean(outputs,axis=sequence_axis)
+                  
               case 'LT':
-                  outputs = outputs[:,-1,:]
+                #get slicer for the right axis
+                slicer = [slice(None)] * outputs.ndim  # Create a list of slice(None) for each dimension
+                slicer[sequence_axis] = -1 #select last token on the sequence axis index 
+                slicer = tuple(slicer)
+                  
+                #slice array selecting
+                outputs = outputs[slicer]
     
           #different saving functions
-          match saving_type:
+          match save_method:
               case "numpy_compressed":
                   np.savez_compressed(f'{output_folder}/{name}.npz',
                               outputs)

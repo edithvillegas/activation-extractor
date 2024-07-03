@@ -29,6 +29,7 @@ def argument_parser():
     parser.add_argument('--output_folder', type=str) #save representations here
     parser.add_argument('--emb_format', type=str, default='mean') #mean, LT (last token)
     parser.add_argument('--save_method', type=str, default='numpy') #numpy or numpy_compressed
+    parser.add_argument('--sequence_axis', type=int, default=1) #sequence length axis
     
     #data source
     parser.add_argument('--data_source', type=str, default='local') #huggingface or local
@@ -49,9 +50,13 @@ def argument_parser():
     #assign variables 
     model_name = args.model_name
     output_folder = args.output_folder
-    emb_format = args.emb_format
-    save_method = args.save_method
     max_batches = args.max_batches
+    
+    save_args = {
+            "save_method":args.save_method,
+            "emb_format":args.emb_format,
+            "sequence_axis": args.sequence_axis,
+    }
     
     data_args = {
             "data_type":args.data_type,
@@ -70,7 +75,7 @@ def argument_parser():
     if args.data_type in ["dna", "protein"]:
         data_args["max_length"] = args.max_length
 
-    return (model_name, output_folder, emb_format, save_method, max_batches, data_args)
+    return (model_name, output_folder, save_args, max_batches, data_args)
 
 # Loading a dataset -----------------------------------------------------------------
 def load_the_data(
@@ -151,8 +156,9 @@ def compose_collate_fns(*args):
     return composed_collate
     
 # SCRIPT ================================================================================
-def main_inference(model_name, output_folder, emb_format, save_method, max_batches, data_args):
+def main_inference(model_name, output_folder, save_args, max_batches, data_args):
     #output folder
+    emb_format = save_args["emb_format"]
     output_folder=f"{output_folder}/{model_name}/{emb_format}"
     os.makedirs(output_folder, exist_ok=True)
     os.chmod(output_folder, mode=0o777)
@@ -190,8 +196,8 @@ def main_inference(model_name, output_folder, emb_format, save_method, max_batch
     with open(f"{output_folder}/inference_args.txt", 'w') as file:
         file.write("🔸 Inference Arguments \n")
         file.write(f"Model name: {model_name} \n") 
-        file.write(f"Embedding format: {emb_format} \n") 
-        file.write(f"Save Method: {save_method} \n") 
+        file.write("🔸 Save Arguments \n")
+        file.write(str(save_args)+"\n") 
         file.write("🔸 Data Arguments \n")
         file.write(str(data_args)+"\n")
         file.write("🔸 Hooked Layers \n")
@@ -222,7 +228,7 @@ def main_inference(model_name, output_folder, emb_format, save_method, max_batch
         ### Saving Part ###
         ## intermediate activations
         extractor.save_outputs(f"{output_folder}/{batch_i}", move_to_cpu=True, 
-                               saving_type=save_method, emb_format=emb_format) #also creates folder
+                               **save_args) #also creates folder
 
         #tokens
         if data_args["data_type"] in ["dna", "protein"]:
@@ -256,10 +262,10 @@ def main_inference(model_name, output_folder, emb_format, save_method, max_batch
 
 def main():
     #parse arguments
-    model_name, output_folder, emb_format, save_method, max_batches, data_args = argument_parser()
+    model_name, output_folder, save_args, max_batches, data_args = argument_parser()
     
     #execute main
-    main_inference(model_name, output_folder, emb_format, save_method, max_batches, data_args)
+    main_inference(model_name, output_folder, save_args, max_batches, data_args)
     
 #Execute main function
 if __name__ == "__main__":
