@@ -112,29 +112,55 @@ def get_layers_to_hook(model, model_type, modality="sequence", return_structure=
         case "visual-mamba":
             pass
             
+        #text 📚
+        case "pythia":
+            n_layers = model.config.num_hidden_layers
+            embeddings = ["gpt_neox.embed_in"]
+            layers = [f"gpt_neox.layers.{n}" for n in range(n_layers)]
 
+        case "mamba":
+            n_layers = model.config.n_layer
+            embeddings = ["backbone.embeddings"]
+            layers = [f"backbone.layers.{n}" for n in range(n_layers)]
+            
         #multimodal 🖼️/📚
         case "clip":
-            layers_to_hook = (["text_model.embeddings", "vision_model.embeddings"]
-                            + [f"text_model.encoder.layers.{n}" for n in range(model.text_model.config.num_hidden_layers)]
-                            + [f"vision_model.encoder.layers.{n}" for n in range(model.vision_model.config.num_hidden_layers)]
-                            + ["visual_projection", "text_projection"])
+            text_embeddings = ["text_model.embeddings"]
+            image_embeddings = ["vision_model.embeddings"]
+            text_layers = (text_embeddings 
+                           + [f"text_model.encoder.layers.{n}" for n in range(model.text_model.config.num_hidden_layers)]
+                           + ["text_projection"])
+            image_layers = (image_embeddings 
+                           + [f"vision_model.encoder.layers.{n}" for n in range(model.text_model.config.num_hidden_layers)]
+                           + ["visual_projection"])
+            
         #default
         case _:
             raise ValueError(f"model_type not valid")
 
     #construct structure 
-    if modality=="sequence":
-        layers_to_hook = embeddings + layers
+    match modality:
+        case "sequence":
+            layers_to_hook = embeddings + layers
+            
+            structure = {
+                "embeddings": embeddings,
+                "layers": layers,
+            }
+            
+        case "image-text":
+            layers_to_hook = text_layers + image_layers 
+            structure = {
+                "text_embeddings": text_embeddings,
+                "text_layers": text_layers,
+                "image_embeddings": image_embeddings,
+                "image_layers": image_layers,
+            }
         
-        structure = {
-            "embeddings": embeddings,
-            "layers": layers,
-        }
-    else:
-        structure = {
-            "layers": layers_to_hook,
-        }
+        case _:
+            structure = {
+                "layers": layers_to_hook,
+            }
 
     #return
     if return_structure==False:

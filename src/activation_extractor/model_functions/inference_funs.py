@@ -85,7 +85,8 @@ def define_inference_function(model_type, model, tokenizer, device):
 
         #default inference for sequences
         #🧬, 🧬
-        case "hyenadna" | "evo" | "caduceus" :
+        case ( "hyenadna" | "evo" | "caduceus" 
+             | "pythia" | "mamba"):
             #### start function definition
             def inference_fun(tokenized_inputs, device, **kwargs):
                 tokens_ids = tokenized_inputs["input_ids"].to(device)

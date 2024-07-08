@@ -229,6 +229,19 @@ def load_model(model_name, model_type, **kwargs):
             transforms = timm.data.create_transform(**data_config, is_training=False)
             #return
             return model, transforms
+
+        #text 📚
+        case "pythia":
+            from transformers import AutoModelForCausalLM
+            tokenizer = load_tokenizer(model_name, tokenizer_type='AutoTokenizer', **kwargs)
+            model = AutoModelForCausalLM.from_pretrained(model_name)
+            return model, tokenizer
+
+        case "mamba":
+            from transformers import MambaConfig, MambaForCausalLM, AutoTokenizer
+            tokenizer = AutoTokenizer.from_pretrained(model_name)
+            model = MambaForCausalLM.from_pretrained(model_name)
+            return model, tokenizer
             
         #multimodal 🖼️/📚 --- 
         case "clip":

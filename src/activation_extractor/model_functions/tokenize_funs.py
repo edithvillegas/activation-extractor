@@ -17,7 +17,8 @@ def define_tokenize_function(model_type, tokenizer, device=None):
     match model_type:
 
         #🥩,🧬,🧬,🧬 
-        case "esm" | "nucleotide-transformer" | "hyenadna" | "caduceus" | "dnabert":  
+        case ("esm" | "nucleotide-transformer" | "hyenadna" | "caduceus" | "dnabert"
+               ):  
             #### start function definition
             def tokenize_fun(sequence_inputs, **kwargs):
                 tokenized = tokenizer.batch_encode_plus(sequence_inputs, 
@@ -108,6 +109,15 @@ def define_tokenize_function(model_type, tokenizer, device=None):
                                                 add_special_tokens=True
                                              ).unsqueeze(0) #shape to (1,L)
                 tokenized = {'input_ids' : input_ids}
+                return tokenized
+           #### end function definition
+        
+        #text 📚
+        case "pythia" | "mamba":
+            #### start function definition
+            def tokenize_fun(sequence_inputs):
+                tokenized = tokenizer(sequence_inputs,
+                                       return_tensors="pt")
                 return tokenized
            #### end function definition
             
