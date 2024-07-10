@@ -46,10 +46,10 @@ class InferencerBase:
 
         #define data pre-processing (tokenization, image processing, etc.)
         match self.modality:
-            case "sequence":
+            case "sequence" | "text":
                 self.process_fun = define_tokenize_function(self.model_type, 
                                                             self.processor)
-            case "image" | "multi":
+            case "image" | "image-text":
                 self.process_fun = define_process_function(self.model_type, 
                                                             self.processor)
 

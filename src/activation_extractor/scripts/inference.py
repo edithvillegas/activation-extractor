@@ -131,6 +131,12 @@ def load_the_data(
 
         if data_type=="mscoco":
             #MS COCO!!
+            #deduplicate
+            dataset = pd.DataFrame(dataset)
+            dataset.drop_duplicates(subset=['URL'])
+            dataset = Dataset.from_pandas(dataset)
+            
+            #collate function
             collate_fn = create_collate_mscoco(image_source,
                           modality=modality,
                           image_dir=image_dir,
@@ -144,8 +150,7 @@ def load_the_data(
 
 
 # SCRIPT ================================================================================
-def main_inference(model_name, output_folder, save_args, max_batches, data_args):
-    #output folder
+def main_inference(model_name, output_folder, save_args, max_batches, data_args):    
     emb_format = save_args["emb_format"]
     output_folder=f"{output_folder}/{model_name}/{emb_format}"
     os.makedirs(output_folder, exist_ok=True)

@@ -143,7 +143,7 @@ def get_layers_to_hook(model, model_type, modality="sequence", return_structure=
     #construct structure 
     match modality:
         #sequence
-        case "sequence":
+        case "sequence" | "text":
             layers_to_hook = embeddings + layers
             
             structure = {
