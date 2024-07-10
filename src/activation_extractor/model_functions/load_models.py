@@ -135,7 +135,7 @@ def load_model(model_name, model_type, **kwargs):
             FolderPath = f"{os.environ['TRANSFORMERS_CACHE']}/electra/{model_name}"
             os.makedirs(FolderPath, exist_ok=True)
 
-            # #corresponding urls for each model
+            # # #corresponding urls for each model
             # if model_name=="Rostlab/prot_electra_generator_bfd":
             #     ModelUrl = 'https://www.dropbox.com/s/5x5et5q84y3r01m/pytorch_model.bin?dl=1'
             #     ConfigUrl = 'https://www.dropbox.com/s/9059fvix18i6why/config.json?dl=1'
@@ -161,16 +161,16 @@ def load_model(model_name, model_type, **kwargs):
             model = AutoModel.from_pretrained(model_name)
             
             #tokenizer
-            # vocabUrl = 'https://www.dropbox.com/s/wck3w1q15bc53s0/vocab.txt?dl=1'
-            # vocabFilePath = f"{FolderPath}/vocab.txt"
-            # download_file(vocabUrl, vocabFilePath)
+            vocabUrl = 'https://www.dropbox.com/s/wck3w1q15bc53s0/vocab.txt?dl=1'
+            vocabFilePath = f"{FolderPath}/vocab.txt"
+            download_file(vocabUrl, vocabFilePath)
             
-            # tokenizer = ElectraTokenizer(vocabFilePath, do_lower_case=False)
+            tokenizer = ElectraTokenizer(vocabFilePath, do_lower_case=False)
             
             #using Prot_Bert tokenizer ❗
-            tokenizer = load_tokenizer("Rostlab/prot_bert", 
-                                       tokenizer_type='AutoTokenizer', 
-                                       **kwargs)
+            # tokenizer = load_tokenizer("Rostlab/prot_bert", 
+            #                            tokenizer_type='AutoTokenizer', 
+            #                            **kwargs)
             return model, tokenizer
             
         case 'ankh':
