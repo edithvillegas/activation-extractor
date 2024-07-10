@@ -15,6 +15,7 @@ from datasets import load_dataset
 
 from activation_extractor import Inferencer, IntermediateExtractor, get_layers_to_hook
 from activation_extractor.model_functions.embedding_to_numpy import embedding_to_numpy
+from activation_extractor.scripts.collate_functions import *
 
 # Parsing Arguments -----------------------------------------------------------------------
 def argument_parser(): 
@@ -23,7 +24,8 @@ def argument_parser():
     #base arguments 
     parser.add_argument('--model_name', type=str) #model name
     parser.add_argument('--batch_size', type=int) #model batch size for inference
-    parser.add_argument('--data_type', type=str) #dna, protein, image
+    parser.add_argument('--data_type', type=str) #dna, protein, image, multimodal
+    parser.add_argument('--modality', type=str) #sequence, image-text
 
     #output
     parser.add_argument('--output_folder', type=str) #save representations here
@@ -43,6 +45,9 @@ def argument_parser():
     #optional arguments
     parser.add_argument('--max_length', type=int, default=None) #default maximum sequence length
     parser.add_argument('--max_batches', type=int, default=None) #break when reach max batches
+    #multimodal image/text dataset
+    parser.add_argument('--image_source', type=str, default="local") #download images or get them from local folder
+    parser.add_argument('--image_dir', type=str, default=None) #download images or get them from local folder
 
     #parse arguments
     args = parser.parse_args()
@@ -50,6 +55,8 @@ def argument_parser():
     #assign variables 
     model_name = args.model_name
     output_folder = args.output_folder
+
+    #optional arguments
     max_batches = args.max_batches
     
     save_args = {
@@ -61,10 +68,14 @@ def argument_parser():
     data_args = {
             "data_type":args.data_type,
             "data_source":args.data_source,
+            "modality":args.modality,
             "target_col":args.target_col,
             "batch_size":args.batch_size,
+            #ms coco
+            "image_dir":args.image_dir,
+            "image_source": args.image_source,
         }
-    
+
     if args.data_source=="local":
         data_args["input_path"] = args.input_path
         
@@ -80,7 +91,8 @@ def argument_parser():
 # Loading a dataset -----------------------------------------------------------------
 def load_the_data(
                 #general data info
-                data_type, data_source, target_col, 
+                data_type, data_source, target_col=None, 
+                modality=None,
                 #optional huggingface info
                 dataset_name=None, dataset_partition=None, 
                 #optional local dataset info
@@ -89,8 +101,11 @@ def load_the_data(
                 batch_size=8, collate_fn=None,
                 #data type options
                 max_length=None,
+                #ms coco
+                image_dir=None,image_source=None,
                  ):
-    
+
+    #load dataset from source 
     if data_source=="huggingface":
         dataset = load_dataset(dataset_name,
                       trust_remote_code=True)
@@ -100,7 +115,8 @@ def load_the_data(
         dataset = pd.read_csv(input_path, index_col=False, comment="#")
 
     #get target column
-    dataset = dataset[target_col]
+    if data_type in ["dna", "protein"]:
+        dataset = dataset[target_col]
 
     #get default collate function based on data type
     if collate_fn is None:
@@ -113,8 +129,12 @@ def load_the_data(
                 #make sure the letters are all caps
                 collate_fn = compose_collate_fns(collate_fn, collate_to_upper)
 
-        if data_type=="image":
-            collate_fn = collate_pil
+        if data_type=="mscoco":
+            #MS COCO!!
+            collate_fn = create_collate_mscoco(image_source,
+                          modality=modality,
+                          image_dir=image_dir,
+                         )
             
     #create data loader
     data_loader = DataLoader(dataset, batch_size=batch_size, 
@@ -122,39 +142,7 @@ def load_the_data(
 
     return data_loader
 
-# Collate Functions ----------------------------------------------------------------
-def collate_pil(batch):
-    """
-    Convert PIL images to numpy arrays.
-    """
-    batch = [np.array(img) for img in batch]
 
-def create_collate_to_max_length(max_length):
-    """
-    Creates a custom collate_fn that truncates sequences to a max length.
-    """
-    def collate_to_max_length(batch):
-        batch=[sequence[0:min(max_length, len(sequence))] for sequence in batch]
-        return batch
-    return collate_to_max_length
-
-def collate_to_upper(batch):
-    """
-    Convert sequence to ALL CAPS.
-    """
-    batch = [sequence.upper() for sequence in batch]
-    return batch
-    
-def compose_collate_fns(*args):
-    """
-    Compose collate functions one after the other.
-    """
-    def composed_collate(batch):
-        for function in args:
-            batch = function(batch)
-        return batch
-    return composed_collate
-    
 # SCRIPT ================================================================================
 def main_inference(model_name, output_folder, save_args, max_batches, data_args):
     #output folder
@@ -185,7 +173,9 @@ def main_inference(model_name, output_folder, save_args, max_batches, data_args)
     print(f"✔️ {model_name}", file=sys.stderr)
 
     #intermediate activation extractor
-    layers_to_hook, structure = get_layers_to_hook(inferencer.model, inferencer.model_type, return_structure=True)
+    layers_to_hook, structure = get_layers_to_hook(model=inferencer.model, model_type=inferencer.model_type, 
+                                                   modality=data_args["modality"], return_structure=True
+                                                  )
     extractor = IntermediateExtractor(inferencer.model, layers_to_hook)
     extractor.register_hooks()
 
@@ -230,14 +220,15 @@ def main_inference(model_name, output_folder, save_args, max_batches, data_args)
         extractor.save_outputs(f"{output_folder}/{batch_i}", move_to_cpu=True, 
                                **save_args) #also creates folder
 
-        #tokens
-        if data_args["data_type"] in ["dna", "protein"]:
+        
+        if data_args["data_type"] in ["dna", "protein", "text"]:
+            #tokens
             tokens=embedding_to_numpy(processed['input_ids'])
             np.save(f'{output_folder}/{batch_i}/tokens_ids.npy', tokens)
             
-        ## outputs
-        outputs = embedding_to_numpy(outputs)
-        np.save(f'{output_folder}/{batch_i}/outputs.npy', outputs)
+            ## outputs
+            outputs = embedding_to_numpy(outputs)
+            np.save(f'{output_folder}/{batch_i}/outputs.npy', outputs)
         
         print(f"Completed batch {batch_i} in {inference_time:.4f} s", file=logfile, flush=True)
 

@@ -27,6 +27,8 @@ def define_process_function(model_type, processor, device=None):
         case "timm":
             #### start function definition
             def process_fun(image, **kwargs):
+                from PIL import Image
+                image=Image.fromarray(image)
                 processed = processor(image).unsqueeze(0)
                 return processed
             #### end function definition

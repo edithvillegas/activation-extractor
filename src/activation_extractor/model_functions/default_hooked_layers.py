@@ -129,10 +129,12 @@ def get_layers_to_hook(model, model_type, modality="sequence", return_structure=
             image_embeddings = ["vision_model.embeddings"]
             text_layers = (text_embeddings 
                            + [f"text_model.encoder.layers.{n}" for n in range(model.text_model.config.num_hidden_layers)]
-                           + ["text_projection"])
+                           # + ["text_projection"]
+            )
             image_layers = (image_embeddings 
                            + [f"vision_model.encoder.layers.{n}" for n in range(model.text_model.config.num_hidden_layers)]
-                           + ["visual_projection"])
+                           # + ["visual_projection"]
+            )
             
         #default
         case _:
@@ -140,6 +142,7 @@ def get_layers_to_hook(model, model_type, modality="sequence", return_structure=
 
     #construct structure 
     match modality:
+        #sequence
         case "sequence":
             layers_to_hook = embeddings + layers
             
@@ -147,7 +150,8 @@ def get_layers_to_hook(model, model_type, modality="sequence", return_structure=
                 "embeddings": embeddings,
                 "layers": layers,
             }
-            
+
+        #image-text
         case "image-text":
             layers_to_hook = text_layers + image_layers 
             structure = {

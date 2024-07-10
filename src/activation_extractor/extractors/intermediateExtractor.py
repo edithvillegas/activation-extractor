@@ -50,7 +50,7 @@ class IntermediateExtractor(IntermediateExtractorBase):
           # full, mean or last token embeddings 
           match emb_format:
               case 'mean':
-                outputs = np.mean(outputs,axis=sequence_axis)
+                outputs = np.mean(outputs, axis=sequence_axis)
                   
               case 'LT':
                 #get slicer for the right axis
