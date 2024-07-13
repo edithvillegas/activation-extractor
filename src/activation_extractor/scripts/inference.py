@@ -11,7 +11,7 @@ import pickle
 import torch
 from torch.cuda import memory_allocated, empty_cache
 from torch.utils.data import DataLoader
-from datasets import load_dataset
+from datasets import load_dataset, Dataset
 
 from activation_extractor import Inferencer, IntermediateExtractor, get_layers_to_hook
 from activation_extractor.model_functions.embedding_to_numpy import embedding_to_numpy
@@ -133,7 +133,7 @@ def load_the_data(
             #MS COCO!!
             #deduplicate
             dataset = pd.DataFrame(dataset)
-            dataset.drop_duplicates(subset=['URL'])
+            dataset=dataset.drop_duplicates(subset=['URL'])
             dataset = Dataset.from_pandas(dataset)
             
             #collate function

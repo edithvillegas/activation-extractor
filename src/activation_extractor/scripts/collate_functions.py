@@ -40,7 +40,11 @@ def create_collate_mscoco(image_source,
                     image = Image.open(image_path)
                 
                 img_array = np.array(image)
-                # img_array = torch.from_numpy(img_array)
+                #check if image is B&W append channel dimension
+                if len(img_array.shape)==2:
+                    img_array =  np.stack((img_array,) * 3, axis=-1)
+    
+                
                 image_batch.append(img_array)
         
             #Get text text
