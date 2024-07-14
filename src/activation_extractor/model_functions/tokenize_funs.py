@@ -113,7 +113,7 @@ def define_tokenize_function(model_type, tokenizer, device=None):
            #### end function definition
         
         #text 📚
-        case "pythia" | "mamba":
+        case "pythia" | "mamba" | "llama" :
             #### start function definition
             def tokenize_fun(sequence_inputs):
                 tokenized = tokenizer(sequence_inputs,

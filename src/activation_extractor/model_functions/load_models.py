@@ -242,6 +242,14 @@ def load_model(model_name, model_type, **kwargs):
             tokenizer = AutoTokenizer.from_pretrained(model_name)
             model = MambaForCausalLM.from_pretrained(model_name)
             return model, tokenizer
+
+        case "llama":
+            from transformers import AutoTokenizer, AutoModelForCausalLM
+            tokenizer = AutoTokenizer.from_pretrained(model_name)
+            model = AutoModelForCausalLM.from_pretrained(model_name,
+                                                        device_map="auto" #multiple GPUs
+                                                        )
+            return model, tokenizer
             
         #multimodal 🖼️/📚 --- 
         case "clip":

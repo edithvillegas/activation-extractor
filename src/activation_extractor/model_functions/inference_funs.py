@@ -84,7 +84,7 @@ def define_inference_function(model_type, model, tokenizer, device):
             
 
         #default inference for sequences
-        #🧬, 🧬
+        #🧬, 📚 
         case ( "hyenadna" | "evo" | "caduceus" 
              | "pythia" | "mamba"):
             #### start function definition
@@ -93,6 +93,14 @@ def define_inference_function(model_type, model, tokenizer, device):
                 outputs = model(tokens_ids)
                 return outputs
             #### end function definition    
+    
+        # text 📚 
+        case "llama":
+            #### start function definition
+            def inference_fun(tokenized_inputs, device, **kwargs):
+                outputs = model(**tokenized_inputs)
+                return outputs
+            #### end function definition   
 
     
         # Images 🖼️ ================================================================

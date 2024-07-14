@@ -40,7 +40,20 @@ class InferencerBase:
             
         #tokenizer, model
         self.model, self.processor = load_model(model_name, model_type=self.model_type)
-        self.model.to(device)
+        
+        #device
+        is_single_device = model_types[model_types.model_name==model_name].single_device.tolist()[0]
+        
+        if is_single_device: 
+            self.model.to(device) #device==["cpu", "cuda"]
+            
+        else:
+            from accelerate import Accelerator
+            accelerator = Accelerator()
+            self.model = accelerator.prepare(self.model)
+            self.device = accelerator.device
+            
+        #set to eval mode    
         self.model.eval()
         if half: self.model.half()
 
