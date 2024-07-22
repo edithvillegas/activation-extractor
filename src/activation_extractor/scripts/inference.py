@@ -30,6 +30,9 @@ def argument_parser():
     #output
     parser.add_argument('--output_folder', type=str) #save representations here
     parser.add_argument('--emb_format', type=str, default='mean') #mean, LT (last token)
+    parser.add_argument('--save_mean', type=int, default=0)
+    parser.add_argument('--save_lt', type=int, default=0)
+    parser.add_argument('--save_ft', type=int, default=0)
     parser.add_argument('--save_method', type=str, default='numpy') #numpy or numpy_compressed
     parser.add_argument('--sequence_axis', type=int, default=1) #sequence length axis
     
@@ -58,13 +61,24 @@ def argument_parser():
 
     #optional arguments
     max_batches = args.max_batches
-    
+
+    #saving arguments
     save_args = {
             "save_method":args.save_method,
-            "emb_format":args.emb_format,
             "sequence_axis": args.sequence_axis,
     }
-    
+    if args.emb_format=="list":
+        save_args["emb_formats"]=[]
+        if args.save_mean:
+            save_args["emb_formats"].append("mean")
+        if args.save_lt:
+            save_args["emb_formats"].append("LT")
+        if args.save_ft:
+            save_args["emb_formats"].append("FT")
+    else:
+        save_args["emb_formats"]=[args.emb_format]
+
+    #data arguments
     data_args = {
             "data_type":args.data_type,
             "data_source":args.data_source,
@@ -107,8 +121,12 @@ def load_the_data(
 
     #load dataset from source 
     if data_source=="huggingface":
-        dataset = load_dataset(dataset_name,
-                      trust_remote_code=True)
+        try:
+            dataset = load_dataset(dataset_name,
+                          trust_remote_code=True)
+        except TypeError:
+            dataset = load_dataset(dataset_name)
+            
         dataset = dataset[dataset_partition]
         
     elif data_source=="local":
@@ -151,10 +169,16 @@ def load_the_data(
 
 # SCRIPT ================================================================================
 def main_inference(model_name, output_folder, save_args, max_batches, data_args):    
-    emb_format = save_args["emb_format"]
-    output_folder=f"{output_folder}/{model_name}/{emb_format}"
-    os.makedirs(output_folder, exist_ok=True)
-    os.chmod(output_folder, mode=0o777)
+    #make folders
+    output_folder=f"{output_folder}/{model_name}"
+    folders = [
+        output_folder,
+        f"{output_folder}/tokens",
+        f"{output_folder}/outputs",
+    ]
+    for folder in folders:
+        os.makedirs(folder, exist_ok=True)
+        os.chmod(folder, mode=0o777)
 
     #print start to log file
     logfile_path = f"{output_folder}/inference.log"
@@ -222,18 +246,20 @@ def main_inference(model_name, output_folder, save_args, max_batches, data_args)
 
         ### Saving Part ###
         ## intermediate activations
-        extractor.save_outputs(f"{output_folder}/{batch_i}", move_to_cpu=True, 
+        extractor.save_outputs(f"{output_folder}",
+                               output_id=str(batch_i),
+                               move_to_cpu=True, 
                                **save_args) #also creates folder
 
         
         if data_args["data_type"] in ["dna", "protein", "text"]:
             #tokens
             tokens=embedding_to_numpy(processed['input_ids'])
-            np.save(f'{output_folder}/{batch_i}/tokens_ids.npy', tokens)
+            np.save(f'{output_folder}/{tokens}/{batch_i}/tokens_ids.npy', tokens)
             
             ## outputs
             outputs = embedding_to_numpy(outputs)
-            np.save(f'{output_folder}/{batch_i}/outputs.npy', outputs)
+            np.save(f'{output_folder}/{outputs}/{batch_i}/outputs.npy', outputs)
         
         print(f"Completed batch {batch_i} in {inference_time:.4f} s", file=logfile, flush=True)
 

@@ -127,6 +127,11 @@ def get_layers_to_hook(model, model_type, modality="sequence", return_structure=
             n_layers = model.config.num_hidden_layers
             embeddings = ["model.embed_tokens"]
             layers = [f"model.layers.{n}" for n in range(n_layers)]
+
+        case "striped-hyena":
+            n_layers = model.config.num_layers
+            embeddings = ["backbone.embedding_layer"]
+            layers = [f"backbone.blocks.{n}" for n in range(n_layers)]
             
         #multimodal 🖼️/📚
         case "clip":

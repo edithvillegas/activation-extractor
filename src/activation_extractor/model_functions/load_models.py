@@ -250,6 +250,12 @@ def load_model(model_name, model_type, **kwargs):
                                                         device_map="auto" #multiple GPUs
                                                         )
             return model, tokenizer
+
+        case "striped-hyena":
+            from transformers import AutoModelForCausalLM, AutoTokenizer
+            tokenizer = AutoTokenizer.from_pretrained(model_name)
+            model = AutoModelForCausalLM.from_pretrained(model_name, trust_remote_code=True)
+            return model, tokenizer
             
         #multimodal 🖼️/📚 --- 
         case "clip":

@@ -58,8 +58,10 @@ def define_inference_function(model_type, model, tokenizer, device):
                 return outputs
             #### end function definition    
 
-        #🥩
-        case "prot_bert" | "prot_xlnet" | "prot_electra":
+        #🥩 📚 
+        case ( "prot_bert" | "prot_xlnet" | "prot_electra" 
+                | "striped-hyena"
+             ):
             #### start function definition
             def inference_fun(tokenized_inputs, device, **kwargs):
                 
@@ -95,6 +97,13 @@ def define_inference_function(model_type, model, tokenizer, device):
             #### end function definition    
     
         # text 📚 
+        case "llama":
+            #### start function definition
+            def inference_fun(tokenized_inputs, device, **kwargs):
+                outputs = model(**tokenized_inputs)
+                return outputs
+            #### end function definition   
+    
         case "llama":
             #### start function definition
             def inference_fun(tokenized_inputs, device, **kwargs):
