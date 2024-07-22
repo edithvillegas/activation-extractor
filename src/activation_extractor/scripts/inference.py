@@ -246,7 +246,7 @@ def main_inference(model_name, output_folder, save_args, max_batches, data_args)
 
         ### Saving Part ###
         ## intermediate activations
-        extractor.save_outputs(f"{output_folder}",
+        extractor.save_outputs(output_folder=f"{output_folder}",
                                output_id=str(batch_i),
                                move_to_cpu=True, 
                                **save_args) #also creates folder

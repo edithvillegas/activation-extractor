@@ -21,9 +21,11 @@ class IntermediateExtractor(IntermediateExtractorBase):
         for name in self.layer_list:
             try:
                 self.intermediate_outputs[name] = embedding_to_numpy(self.intermediate_outputs[name])  
-            except:
+            except KeyError:
                 #print(f"{name} not in dictionary", file=sys.stderr)
                 pass
+            except Exception as e:
+                print(e)
 
     def emb_reformatting(self, outputs, 
                                  emb_format='full', 
@@ -74,8 +76,8 @@ class IntermediateExtractor(IntermediateExtractorBase):
 
 
     def save_outputs(self, output_folder, output_id, reset=False, move_to_cpu=True, 
-       save_method="numpy_compressed", emb_formats=['LT', 'FT'],
-        sequence_axis=1, custom_position=None):
+                   save_method="numpy_compressed", emb_formats=['LT', 'FT'],
+                    sequence_axis=1, custom_position=None):
         """
         Save intermediate activation dictionary to output folder.
         You can choose:
@@ -101,7 +103,7 @@ class IntermediateExtractor(IntermediateExtractorBase):
             #reformat outputs
             for emb_format in emb_formats:
                 #reformat outputs
-                outputs = self.emb_reformatting(outputs=outputs, 
+                outputs_formatted = self.emb_reformatting(outputs=outputs, 
                                      emb_format=emb_format, 
                                      sequence_axis=sequence_axis,
                                      custom_position=custom_position,
@@ -111,7 +113,7 @@ class IntermediateExtractor(IntermediateExtractorBase):
                 match save_method:
                     case "numpy_compressed":
                         np.savez_compressed(f'{output_folder}/{emb_format}/{output_id}/{name}.npz',
-                                  outputs)
+                                  outputs_formatted)
                     case "numpy":
                         np.save(f'{output_folder}/{emb_format}/{output_id}/{name}.npy',
-                                  outputs)
+                                  outputs_formatted)
