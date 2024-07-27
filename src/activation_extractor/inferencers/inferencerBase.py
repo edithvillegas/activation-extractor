@@ -85,14 +85,14 @@ class InferencerBase:
         processed_input = self.process_fun(input_data, **kwargs)
         return processed_input
 
-    def inference(self, processed_input):
+    def inference(self, processed_input, **kwargs):
         """
         Do inference on processed inputs.
         
         :param processed_input: processed inputs
         :return: the model outputs
         """
-        outputs = self.inference_fun(processed_input, self.device)
+        outputs = self.inference_fun(processed_input, self.device, **kwargs)
         return outputs
 
    

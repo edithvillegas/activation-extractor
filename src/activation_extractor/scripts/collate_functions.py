@@ -96,4 +96,11 @@ def compose_collate_fns(*args):
             batch = function(batch)
         return batch
     return composed_collate
+
+def pdb_path_collate(batch):
+    """
+    Format pdb path as a dictionary.
+    """
+    batch = {"pdb":batch}
+    return batch
     

@@ -15,6 +15,7 @@ from datasets import load_dataset, Dataset
 
 from activation_extractor import Inferencer, IntermediateExtractor, get_layers_to_hook
 from activation_extractor.model_functions.embedding_to_numpy import embedding_to_numpy
+#import all collate functions from:
 from activation_extractor.scripts.collate_functions import *
 
 # Parsing Arguments -----------------------------------------------------------------------
@@ -51,6 +52,9 @@ def argument_parser():
     #multimodal image/text dataset
     parser.add_argument('--image_source', type=str, default="local") #download images or get them from local folder
     parser.add_argument('--image_dir', type=str, default=None) #download images or get them from local folder
+    #multimodal protein sequence/structure
+    parser.add_argument('--sequence_inf', type=int, default=1)
+    parser.add_argument('--structure_inf', type=int, default=1)
 
     #parse arguments
     args = parser.parse_args()
@@ -100,7 +104,14 @@ def argument_parser():
     if args.data_type in ["dna", "protein"]:
         data_args["max_length"] = args.max_length
 
-    return (model_name, output_folder, save_args, max_batches, data_args)
+    #multimodality optional arguments
+    inference_args = dict()
+    if args.sequence_inf==0:
+        inference_args['sequence']=False
+    if args.structure_inf==0:
+        inference_args['structure']=False
+
+    return (model_name, output_folder, save_args, max_batches, data_args, inference_args)
 
 # Loading a dataset -----------------------------------------------------------------
 def load_the_data(
@@ -133,7 +144,7 @@ def load_the_data(
         dataset = pd.read_csv(input_path, index_col=False, comment="#")
 
     #get target column
-    if data_type in ["dna", "protein"]:
+    if data_type in ["dna", "protein", "protein-str"]:
         dataset = dataset[target_col]
 
     #get default collate function based on data type
@@ -149,7 +160,7 @@ def load_the_data(
 
         if data_type=="mscoco":
             #MS COCO!!
-            #deduplicate
+            #deduplicate picture descriptions
             dataset = pd.DataFrame(dataset)
             dataset=dataset.drop_duplicates(subset=['URL'])
             dataset = Dataset.from_pandas(dataset)
@@ -159,7 +170,9 @@ def load_the_data(
                           modality=modality,
                           image_dir=image_dir,
                          )
-            
+
+        if data_type=="protein-str":
+            collate_fn = pdb_path_collate
     #create data loader
     data_loader = DataLoader(dataset, batch_size=batch_size, 
                              shuffle=False, collate_fn=collate_fn)
@@ -168,7 +181,7 @@ def load_the_data(
 
 
 # SCRIPT ================================================================================
-def main_inference(model_name, output_folder, save_args, max_batches, data_args):    
+def main_inference(model_name, output_folder, save_args, max_batches, data_args, inference_args):    
     #make folders
     output_folder=f"{output_folder}/{model_name}"
     folders = [
@@ -234,7 +247,7 @@ def main_inference(model_name, output_folder, save_args, max_batches, data_args)
         #inference
         try:
             start_inference_time = time.time()
-            outputs = inferencer.inference(processed)
+            outputs = inferencer.inference(processed, **inference_args)
             inference_time = time.time() - start_inference_time
         except Exception as e:
             print(f"❌ {model_name}", file=logfile, flush=True)
@@ -267,6 +280,10 @@ def main_inference(model_name, output_folder, save_args, max_batches, data_args)
         if max_batches is not None:
             if batch_i==max_batches:
                 break
+
+        #clear memory
+        del outputs
+        empty_cache()
     #loop over batches ---------------------------
     
     #total execution time
@@ -274,9 +291,6 @@ def main_inference(model_name, output_folder, save_args, max_batches, data_args)
     print(f'Total time: {total_time}', file=logfile, flush=True)
     
     #Exit --------------------------
-    #clear memory
-    del outputs
-    empty_cache()
     #close log file
     print(f'✔️ Script finished on: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}', 
           file=logfile, flush=True)
@@ -284,10 +298,10 @@ def main_inference(model_name, output_folder, save_args, max_batches, data_args)
 
 def main():
     #parse arguments
-    model_name, output_folder, save_args, max_batches, data_args = argument_parser()
+    model_name, output_folder, save_args, max_batches, data_args, inference_args = argument_parser()
     
     #execute main
-    main_inference(model_name, output_folder, save_args, max_batches, data_args)
+    main_inference(model_name, output_folder, save_args, max_batches, data_args, inference_args)
     
 #Execute main function
 if __name__ == "__main__":

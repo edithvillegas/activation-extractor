@@ -182,10 +182,25 @@ def load_model(model_name, model_type, **kwargs):
 
         case "esm3": #🥩/🧱/🌟
             from esm.models.esm3 import ESM3
+            #sequence
             from esm.tokenization.sequence_tokenizer import EsmSequenceTokenizer
+            #structure
+            from esm.tokenization.structure_tokenizer import StructureTokenizer
+            from esm.utils.constants.esm3 import VQVAE_SPECIAL_TOKENS
+            from esm.pretrained import ESM3_structure_encoder_v0
             
             model: ESM3InferenceClient = ESM3.from_pretrained("esm3_sm_open_v1")
-            tokenizer = EsmSequenceTokenizer()
+            #sequence
+            seq_tokenizer = EsmSequenceTokenizer()
+            #structure
+            structure_tokenizer = StructureTokenizer(vq_vae_special_tokens=VQVAE_SPECIAL_TOKENS)
+            structure_encoder = ESM3_structure_encoder_v0()
+
+            tokenizer = {
+                "sequence":seq_tokenizer,
+                "structure_tokenizer":structure_tokenizer,
+                "structure_encoder":structure_encoder,
+            }
             return model, tokenizer
 
         #image 🖼️ --- 

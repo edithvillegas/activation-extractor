@@ -151,12 +151,27 @@ def define_inference_function(model_type, model, tokenizer, device):
         #🥩/🧱/🌟
         case "esm3":
             #### start function definition
-            def inference_fun(processed_input, device, **kwargs):
+            def inference_fun(processed_input, device, sequence=True, structure=True, **kwargs):
                 """
-                ESM3 forward pass, just for sequence input.
+                ESM3 forward pass.
                 """
-                processed_input = processed_input['input_ids'].to(device)
-                outputs = model.forward(sequence_tokens = processed_input)
+                #overwrite modalities
+                if sequence is False:
+                    processed_input["sequence"]=None
+                if structure is False:
+                    processed_input["structure"]=None
+                    
+                #move to device
+                for key in processed_input.keys():
+                    if processed_input[key] is not None:
+                        processed_input[key]=processed_input[key].to(device)
+                    
+                #forward
+                outputs = model.forward(
+                    sequence_tokens = processed_input["sequence"],
+                    structure_tokens = processed_input["structure"]
+                )
+                
                 return outputs
             #### end function definition
 

@@ -99,16 +99,44 @@ def define_tokenize_function(model_type, tokenizer, device=None):
         #🥩/🧱/🌟
         case "esm3":
             #### start function definition
-            def tokenize_fun(sequence_inputs):
+            def tokenize_fun(inputs):
                 """
-                ESM3 just for sequences
+                ESM3
                 """
+                #sequence tokenization
                 from esm.utils.encoding import tokenize_sequence
-                input_ids = tokenize_sequence(sequence=sequence_inputs[0], #input is a string not list
-                                                sequence_tokenizer=tokenizer,
-                                                add_special_tokens=True
-                                             ).unsqueeze(0) #shape to (1,L)
-                tokenized = {'input_ids' : input_ids}
+                
+                #structure tokenization
+                from esm.sdk.api import ESMProtein
+                from esm.utils.encoding import tokenize_structure
+                
+
+                #sequence
+                if "sequence" in inputs.keys():
+                    tokenized_sequence = tokenize_sequence(sequence=inputs['sequence'][0], #input is a string not list
+                                                    sequence_tokenizer=tokenizer["sequence"],
+                                                    add_special_tokens=True
+                                                 ).unsqueeze(0) #shape to (1,L)
+                    tokenized_structure = None 
+                
+                #structure
+                elif "pdb" in inputs.keys():
+                    protein = ESMProtein.from_pdb(inputs['pdb'][0])
+                    tokenized_sequence = tokenize_sequence(sequence=protein.sequence, #input is a string not list
+                                                    sequence_tokenizer=tokenizer["sequence"],
+                                                    add_special_tokens=True
+                                                 ).unsqueeze(0) #shape to (1,L)
+                    
+                    tokenized_structure = tokenize_structure(
+                                                        coordinates = protein.coordinates,
+                                                        structure_encoder = tokenizer["structure_encoder"],
+                                                        structure_tokenizer= tokenizer["structure_tokenizer"],
+                                                        )[2].unsqueeze(0)
+                                                        
+                tokenized = {
+                    "sequence": tokenized_sequence,
+                    "structure": tokenized_structure,
+                }
                 return tokenized
            #### end function definition
         
