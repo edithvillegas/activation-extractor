@@ -49,6 +49,7 @@ def argument_parser():
     #optional arguments
     parser.add_argument('--max_length', type=int, default=None) #default maximum sequence length
     parser.add_argument('--max_batches', type=int, default=None) #break when reach max batches
+    parser.add_argument('--min_batches', type=int, default=None) #break when reach max batches
     #multimodal image/text dataset
     parser.add_argument('--image_source', type=str, default="local") #download images or get them from local folder
     parser.add_argument('--image_dir', type=str, default=None) #download images or get them from local folder
@@ -65,6 +66,7 @@ def argument_parser():
 
     #optional arguments
     max_batches = args.max_batches
+    min_batches = args.min_batches
 
     #saving arguments
     save_args = {
@@ -111,7 +113,7 @@ def argument_parser():
     if args.structure_inf==0:
         inference_args['structure']=False
 
-    return (model_name, output_folder, save_args, max_batches, data_args, inference_args)
+    return (model_name, output_folder, save_args, max_batches, min_batches, data_args, inference_args)
 
 # Loading a dataset -----------------------------------------------------------------
 def load_the_data(
@@ -181,7 +183,7 @@ def load_the_data(
 
 
 # SCRIPT ================================================================================
-def main_inference(model_name, output_folder, save_args, max_batches, data_args, inference_args):    
+def main_inference(model_name, output_folder, save_args, max_batches, min_batches, data_args, inference_args):    
     #make folders
     output_folder=f"{output_folder}/{model_name}"
     folders = [
@@ -195,7 +197,7 @@ def main_inference(model_name, output_folder, save_args, max_batches, data_args,
 
     #print start to log file
     logfile_path = f"{output_folder}/inference.log"
-    logfile = open(logfile_path, "w")
+    logfile = open(logfile_path, "a")
     print(f'====================', file=logfile, flush=True)
     print(f'✔️ Script started on: {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}', 
           file=logfile, flush=True)
@@ -239,7 +241,12 @@ def main_inference(model_name, output_folder, save_args, max_batches, data_args,
     #measure total execution time
     start_total_time = time.time()
 
-    for batch_i, batch in enumerate(data_loader):   
+    for batch_i, batch in enumerate(data_loader):  
+        #skip batches
+        if min_batches is not None:
+            if batch_i<min_batches:
+                pass
+                
         ### Inference Part ###
         #process
         processed = inferencer.process(batch)
@@ -298,10 +305,10 @@ def main_inference(model_name, output_folder, save_args, max_batches, data_args,
 
 def main():
     #parse arguments
-    model_name, output_folder, save_args, max_batches, data_args, inference_args = argument_parser()
+    model_name, output_folder, save_args, max_batches, min_batches, data_args, inference_args = argument_parser()
     
     #execute main
-    main_inference(model_name, output_folder, save_args, max_batches, data_args, inference_args)
+    main_inference(model_name, output_folder, save_args, max_batches, min_batches, data_args, inference_args)
     
 #Execute main function
 if __name__ == "__main__":
